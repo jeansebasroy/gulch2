@@ -1,8 +1,13 @@
 @import "bootstrap";
 
+html {
+  font-family: 'Monda', sans-serif;
+}
 .navbar {
     .navbar-inner {
         background-color: #e3dac9;
+        margin-left: 50px;
+        margin-right: 50px;
         background-image: none;
     }
 }
@@ -28,13 +33,14 @@ p {
   font-size: 1.1em;
   line-height: 1.7em;
 }
+
 #logo {
   float: left;
   margin-right: 10px;
   font-size: 1.7em;
   color: $grayLight;
   letter-spacing: -1px;
-  padding-top: 10px; 
+  padding-top: 5px; 
 /*  font-weight: bold;*/
   line-height: 1;
   &:hover {
@@ -43,16 +49,33 @@ p {
     }
 }
  footer {
-  margin-top: 5px;
-  padding-top: 5px;
-  border-top: 1px solid #336699;
-  color: $grayLight;
+  margin: 1px;
+  padding-bottom: 50px;
+  border: 1px solid #336699;
+  color: #336699;
+  background-color: #e3dac9;
+  text-align: center;
 }
 small {
   float: left;
   margin-left: 300px;
   text-align: center;
 }
+
+ul
+{
+    list-style-type: none;
+}
+.btn-custom.active {
+  color: rgba(255, 255, 255, 0.75);
+}
+.row {
+    background-color: #dbd7d2  ; 
+    color: #336699 ;
+    text-align: center;
+    font-size: 1.8em;
+}
+
 
 // Place all the styles related to the TariffTools controller here.
 // They will automatically be included in application.css.
