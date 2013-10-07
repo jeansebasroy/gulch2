@@ -1,32 +1,20 @@
-<h1>Input Zip Code in the New Sessions View!</h1>
+<h1>Sign in</h1>
 
 <div class="row">
-	<div class="span6 offset3">
-		
-		<%=form_for(:session, url: sessions_path) do |f| %>
+  <div class="span6 offset3">
+    <%= form_for(:session, url: sessions_path) do |f| %>
 
-			<br> <!-- enters a blank line, ie: line break -->
-			<%= f.label :zip_code %>
-			<%= f.text_field :zip_code, {:value => '07004'} %>
+      <%= f.label :email %>
+      <%= f.text_field :email %>
+      <br> <!-- enters a blank line, ie: line break -->
 
-			<br> <!-- enters a blank line, ie: line break -->
-			<%= f.label :demand_in_kW %>
-			<%= f.text_field :demand_in_kW, {:value => '100'} %>
+      <%= f.label :password %>
+      <%= f.password_field :password %>
+      <br> <!-- enters a blank line, ie: line break -->
 
-			<br> <!-- enters a blank line, ie: line break -->
-			<%= f.label :usage_in_kWh %>
-			<%= f.text_field :usage_in_kWh, {:value => '10000'} %>
+      <%= f.submit "Sign in", class: "btn btn-large btn-primary" %>
+    <% end %>
 
-			<br> <!-- enters a blank line, ie: line break -->
-			<%= f.label :bill_date %>
-			<%= f.text_field :bill_date, {:value => '10/1/2013'} %>
-
-			<br> <!-- enters a blank line, ie: line break -->
-			<%= f.label :phases %>
-			<%= f.text_field :phases, {:value => '3-phase'} %>
-
-			<br> <!-- enters a blank line, ie: line break -->
-			<%= f.submit "Submit", class: "btn btn-large btn-primary" %>
-		<% end %>
-	</div>
+    <p>New user? <%= link_to "Sign up now!", signup_path %></p>
+  </div>
 </div>

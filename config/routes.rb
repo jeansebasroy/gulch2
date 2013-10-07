@@ -1,8 +1,17 @@
 Gulch2::Application.routes.draw do
   resources :tarifftools
-  resources :sessions
-  match '/',      to: 'sessions#new',       via: 'get'
-  match '/tool',  to: 'tariff_tools#tool',  via: 'get'
+  resources :sessions, only: [:new, :create, :destroy]
+  resources :users
+
+  match '/signup',  to: 'users#new',          via: 'get'
+  match '/signin',  to: 'sessions#new',       via: 'get' 
+  match '/signout', to: 'sessions#destroy',   via: 'delete'
+  match '/input',   to: 'tariff_tools#input', via: 'get'
+  match '/tool',    to: 'tariff_tools#tool',  via: 'get'
+  
+  #match '/signup',  to: 'users#new',            via: 'get'
+  #match '/signin',  to: 'sessions#new',         via: 'get'
+  #match '/signout', to: 'sessions#destroy',     via: 'delete'
   
 
   # The priority is based upon order of creation: first created -> highest priority.

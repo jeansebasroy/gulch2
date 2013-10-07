@@ -11,16 +11,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130924205717) do
+ActiveRecord::Schema.define(version: 20131007192239) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "bill_groups", force: true do |t|
+  create_table "tariff_bill_groups", force: true do |t|
     t.string   "name"
     t.integer  "order"
-    t.integer  "tariff_line_item_id"
-    t.integer  "tariff_tariff_id"
+    t.integer  "tariff_billing_class_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -31,8 +30,8 @@ ActiveRecord::Schema.define(version: 20130924205717) do
     t.string   "phases"
     t.string   "voltage"
     t.string   "units"
-    t.float    "start"
-    t.float    "end"
+    t.float    "start_value"
+    t.float    "end_value"
     t.integer  "tariff_territory_id"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -64,7 +63,7 @@ ActiveRecord::Schema.define(version: 20130924205717) do
 
   create_table "tariff_line_items", force: true do |t|
     t.string   "name"
-    t.string   "type"
+    t.string   "line_item_type"
     t.date     "effective_date"
     t.date     "expiration_date"
     t.float    "rate"
@@ -156,7 +155,7 @@ ActiveRecord::Schema.define(version: 20130924205717) do
 
   create_table "tariff_tariffs", force: true do |t|
     t.string   "name"
-    t.string   "type"
+    t.string   "tariff_type"
     t.integer  "tariff_billing_class_id"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -179,7 +178,7 @@ ActiveRecord::Schema.define(version: 20130924205717) do
   end
 
   create_table "tariff_tous", force: true do |t|
-    t.string   "type"
+    t.string   "tou_type"
     t.string   "day_of_week"
     t.time     "start_time"
     t.time     "end_time"
@@ -200,5 +199,23 @@ ActiveRecord::Schema.define(version: 20130924205717) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "users", force: true do |t|
+    t.string   "first_name"
+    t.string   "last_name"
+    t.string   "email"
+    t.string   "phone"
+    t.string   "company"
+    t.string   "address"
+    t.string   "city"
+    t.string   "state"
+    t.string   "zip"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "password_digest"
+    t.string   "remember_token"
+  end
+
+  add_index "users", ["remember_token"], name: "index_users_on_remember_token", using: :btree
 
 end
