@@ -10,7 +10,7 @@ class TariffBillingClass < ActiveRecord::Base
 	def self.billing_class(zip, demand, usage, phases)
 		@territory = TariffTerritory.territory(zip)
 		@billing_class = TariffBillingClass.where('tariff_territory_id = ? AND units = ?
-				AND start_value <= ? AND end_value > ? AND phases = ?', 
+				AND start_value <= ? AND (end_value > ? OR end_value isnull) AND phases = ?', 
 				@territory.id, "kW", demand, demand, phases) 
 		
 		# If no billing class is returned based on kW, looks to find one that is returned based on kWh

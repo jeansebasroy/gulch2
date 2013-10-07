@@ -83,6 +83,64 @@
 							<% @bill_group_total += (i.rate * @usage.to_f) %>
 							<%= number_to_currency(i.rate * @usage.to_f) %> <!-- total -->
 						</td> 
+					<% when 'Stepped' %>
+						<% @stepped_rates = TariffSteppedRates.stepped_rates(i.id) %>
+						<% @stepped_rates.each do |k| %>
+							<% case k.unit %>
+							<% when 'kW' %>
+								<% if @demand.to_f > k.start %>
+									<tr>
+										<td> </td>
+										<td> 
+											<% if k.end.blank? %> 
+												<% @temp_value = (@demand.to_f - k.start) %>
+											<% else %>
+												<% if @demand.to_f > k.end %>
+													<% @temp_value = (k.end - k.start) %>
+												<% else %>
+													<% @temp_value = (@demand.to_f - k.start) %>
+												<% end %>
+											<% end %>
+											<%= @temp_value %> <!-- value -->
+										</td>	
+										<td> kW </td> 	<!-- value label -->
+										<td> x </td>	<!-- math symbol -->
+										<td> <%= number_to_currency(k.rate, precision: 6) %> </td> 	<!-- rate -->
+										<td> 
+											<% @bill_group_total += (k.rate * @temp_value) %>
+											<%= number_to_currency(k.rate * @temp_value) %> <!-- total -->
+										</td>
+									</tr> 
+								<% end %>
+							<% when 'kWh' %>
+								<% if @usage.to_f > k.start %>
+									<tr>
+										<td> </td>
+										<td> 
+											<% if k.end.blank? %> 
+												<% @temp_value = (@usage.to_f - k.start) %>
+											<% else %>
+												<% if @usage.to_f > k.end %>
+													<% @temp_value = (k.end - k.start) %>
+												<% else %>
+													<% @temp_value = (@usage.to_f - k.start) %>
+												<% end %>
+											<% end %>
+											<%= @temp_value %> <!-- value -->
+										</td>	
+										<td> kWh </td> 	<!-- value label -->
+										<td> x </td>	<!-- math symbol -->
+										<td> <%= number_to_currency(k.rate, precision: 6) %> </td> 	<!-- rate -->
+										<td> 
+											<% @bill_group_total += (k.rate * @temp_value) %>
+											<%= number_to_currency(k.rate * @temp_value) %> <!-- total -->
+										</td>
+									</tr> 
+								<% end %>
+							<% else %>
+								This is going to be a problem <!-- flags an issue with the data in the database -->
+							<% end %>
+						<% end %>
 					<% else %>
 						<td> <%= i.line_item_type %> </td>
 
