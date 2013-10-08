@@ -8,8 +8,8 @@ class TariffSeason < ActiveRecord::Base
 	# returns the type of season based on date and zip code
 	def self.season(date, zip)
 		@tariff_territory = TariffTerritory.territory(zip)
-		@season = TariffSeason.where('tariff_territory_id = ? AND start_date <= ?
-					AND end_date >= ?',
+		@season = TariffSeason.where('tariff_territory_id = ? AND season_start_date <= ?
+					AND season_end_date >= ?',
 					@tariff_territory.id, date, date)
 	end
 end

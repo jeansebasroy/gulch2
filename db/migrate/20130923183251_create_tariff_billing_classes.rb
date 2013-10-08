@@ -1,7 +1,7 @@
 class CreateTariffBillingClasses < ActiveRecord::Migration
   def change
     create_table :tariff_billing_classes do |t|
-      t.string :name
+      t.string :billing_class_name
       t.string :customer_type
       t.string :phases
       t.string :voltage
