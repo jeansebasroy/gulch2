@@ -1,3 +1,101 @@
+@import "bootstrap";
+
+html {
+  font-family: 'Monda', sans-serif;
+}
+.navbar {
+    
+        background-color: #e3dac9;
+        margin-left: 50px;
+        margin-right: 50px;
+        background-image: none;
+    }
+
+h1 {
+  font-size: 1.8em;
+  letter-spacing: 2px;
+  margin-top: 50px;
+  margin-bottom: 20px;
+  text-align: center;
+
+  color: #336699;
+
+}
+
+h3 {
+  font-size: 1.3em;
+  letter-spacing: 1px;
+  margin-bottom: 10px;
+  text-align: center;
+  font-weight: normal;
+  color: $grayLight;
+  }
+
+p {
+  font-size: 1.1em;
+  line-height: 1.7em;
+  text-align: center;
+  color: #000080;
+}
+
+table {
+  text-align: center;
+  font-size: 1.1em;
+  color: #000080;
+   border-collapse: separate;
+  border-spacing: 20px;
+}
+
+#logo {
+  float: left;
+  margin-right: 10px;
+  font-size: 1.7em;
+  color: $grayLight;
+  letter-spacing: -1px;
+  padding-top: 5px; 
+/*  font-weight: bold;*/
+  line-height: 1;
+  &:hover {
+      color: #336699;
+      text-decoration: none;
+    }
+}
+ footer {
+  margin: 1px;
+  padding-bottom: 50px;
+  border: 1px solid #336699;
+
+  color: $grayLight;
+  background-color: #ae2029 ;
+
+  color: #336699;
+
+  text-align: center;
+}
+small {
+  float: left;
+  margin-left: 300px;
+  text-align: center;
+}
+
+ul
+{
+    list-style-type: none;
+}
+.btn-custom.active {
+  color: rgba(255, 255, 255, 0.75);
+}
+.row {
+
+
+    background-color: #dbd7d2  ; 
+    color: #336699 ;
+
+    text-align: center;
+    font-size: 1.8em;
+}
+
+
 // Place all the styles related to the Users controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
