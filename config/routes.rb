@@ -3,6 +3,8 @@ Gulch2::Application.routes.draw do
   resources :sessions, only: [:new, :create, :destroy]
   resources :users
   root 'static_pages#home'
+  match '/company',  to: 'static_pages#company',  via: 'get'
+  match '/contact', to: 'static_pages#contact', via: 'get'
   match '/signup',  to: 'users#new',          via: 'get'
   match '/signin',  to: 'sessions#new',       via: 'get' 
   match '/signout', to: 'sessions#destroy',   via: 'delete'
