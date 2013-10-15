@@ -1,10 +1,10 @@
 require 'spec_helper'
 
 describe "User Pages" do
-  describe "login page" do
-    it "should have the content for 'Login'" do
-    	visit '/login'
-    	expect(page).to have_content('Login')
+  describe "signin page" do
+    it "should have the content for 'signin'" do
+    	visit signin_path
+    	expect(page).to have_content('Sign In')
     	expect(page).to have_content('Email')
     	expect(page).to have_content('Password')
 
@@ -21,12 +21,12 @@ describe "User Pages" do
       expect(page).to have_content('First name')
       expect(page).to have_content('Last name')
       expect(page).to have_content('Email')
-    # expect(page).to have_content('Phone')
-    # expect(page).to have_content('Company')
-    # expect(page).to have_content('Address')
-    # expect(page).to have_content('City')
-    # expect(page).to have_content('State')
-    # expect(page).to have_content('Zip')
+      expect(page).to have_content('Phone')
+      expect(page).to have_content('Company')
+      expect(page).to have_content('Address')
+      expect(page).to have_content('City')
+      expect(page).to have_content('State')
+      expect(page).to have_content('Zip')
       expect(page).to have_content('Password')
       expect(page).to have_content('Confirmation')
       
@@ -45,10 +45,17 @@ describe "User Pages" do
     end
 
     describe "with valid information" do
+      let(:user) { FactoryGirl.create(:user) }
       before do
-        fill_in "First Name",   with: "Example"
-        fill_in "Last Name",    with: "User"
+        fill_in "First name",   with: "Example"
+        fill_in "Last name",    with: "User"
         fill_in "Email",        with: "user@example.com"
+        fill_in "Phone",        with: "555-867-5309"
+        fill_in "Company",      with: "Acme Inc."
+        fill_in "Address",      with: "123 Main St"
+        fill_in "City",         with: "Any Town"
+        fill_in "State",        with: "IL"
+        fill_in "Zip",          with: "99999"
         fill_in "Password",     with: "123456"
         fill_in "Confirmation", with: "123456"
       end
@@ -61,9 +68,9 @@ describe "User Pages" do
         before { click_button submit }
         let(:user) { User.find_by(email: 'user@example.com') }
 
-        #it { should have_link('Sign out') }
-        it { should have_title(user.name) }
-        it { should have_selector('div.alert.alert-success', text: 'Welcome to Gulch Solutions') }
+        #it { should have_title(user.name) }
+        #it { should have_selector('div.alert.alert-success', text: 'Welcome to Gulch Solutions') }
+      end
     end
   end
 

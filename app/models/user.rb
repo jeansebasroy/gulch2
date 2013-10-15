@@ -1,11 +1,40 @@
 class User < ActiveRecord::Base
 	before_save { self.email = email.downcase }
+		#self.state = state.upcase
 	before_create :create_remember_token
+	
+	#first name
 	validates :first_name, presence: true
+	
+	#last name
 	validates :last_name, presence: true
+	
+	#email
 	VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
 	validates :email, presence: true, format: { with: VALID_EMAIL_REGEX },
 					uniqueness: { case_sensitive: false }
+
+	#phone
+	VALID_PHONE_REGEX = /\(?[\d]{3}\)?[\s\.-]?[\d]{3}[\s\.-]?[\d]{4}/
+		#REGEX doesn't handle including a leading "1"
+	validates :phone, presence: true, format: { with: VALID_PHONE_REGEX }
+
+	#company
+	validates :company, presence: true
+
+	#address
+
+	#city
+
+	#state
+	#VALID_STATE_REGEX = /[a-z]{2}/i
+	#validates :state, format: { with: VALID_STATE_REGEX }
+
+	#zip
+	#VALID_ZIP_REGEX = /\d{5}/
+	#validates :zip, format: { with: VALID_ZIP_REGEX }
+
+	#password
 	has_secure_password
 	validates :password, length: { minimum: 6 }
 

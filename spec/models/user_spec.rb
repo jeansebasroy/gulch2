@@ -3,8 +3,8 @@ require 'spec_helper'
 describe User do
 
   	before { @user = User.new(first_name: "Example", last_name: "User", email: "user@example.com",
-  							phone: "867-5309", company: "Acme Inc", address: "123 Main St",
-  							city: "Any Town", state: "AA", zip: "99999", password: "123456", 
+  							phone: "555-867-5309", company: "Acme Inc", address: "123 Main St",
+  							city: "Any Town", state: "IL", zip: "99999", password: "123456", 
   							password_confirmation: "123456") }
 
   	subject { @user }
@@ -24,11 +24,19 @@ describe User do
     it { should respond_to(:remember_token) }
   	it { should respond_to(:authenticate) }
 
+# First name
   	describe "when first_name is not present" do
   		before { @user.first_name = " " }
   		it { should_not be_valid }
   	end
 
+# Last name
+    describe "when last_name is not present" do
+      before { @user.last_name = " " }
+      it { should_not be_valid }
+    end
+
+# Email
   	describe "when email format is invalid" do
     	it "should be invalid" do
       		addresses = %w[user@foo,com user_at_foo.org example.user@foo.
@@ -59,10 +67,57 @@ describe User do
     	it { should_not be_valid }
   	end
 
+# Phone number
+  describe "when phone number is not present" do
+    before do
+      @user = User.new(first_name: "Example", last_name: "User", email: "user@example.com",
+                phone: " ", company: "Acme Inc", address: "123 Main St",
+                city: "Any Town", state: "IL", zip: "99999", password: "123456", 
+                password_confirmation: "123456")
+    end
+
+    it { should_not be_valid }
+  
+  end
+
+  describe "when phone number is not numbers" do
+  
+
+  end
+
+  # contains more than 10 numbers
+  # contains less than 10 numbers
+
+# Company
+  describe "when company is not present" do
+    before do
+      @user = User.new(first_name: "Example", last_name: "User", email: "user@example.com",
+                phone: "555-867-5309", company: " ", address: "123 Main St",
+                city: "Any Town", state: "IL", zip: "99999", password: "123456", 
+                password_confirmation: "123456")
+    end
+
+    it { should_not be_valid }
+  end
+
+# State
+  # contains other characters than just letters
+  # is more than 2 characters long
+  # is less than 2 characters long
+
+
+# Zip
+  # contains other characters than just numbers
+  # is more than 5 characters long
+  # is less than 5 characters long
+
+# Password
 	describe "when password is not present" do
   		before do
     		@user = User.new(first_name: "Example", last_name: "Example", email: "user@example.com",
-                     password: " ", password_confirmation: " ")
+                      phone: "555-867-5309", company: "Acme Inc", address: "123 Main St",
+                      city: "Any Town", state: "IL", zip: "99999", 
+                      password: " ", password_confirmation: " ")
   		end
 
   		it { should_not be_valid }
