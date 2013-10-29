@@ -2,11 +2,14 @@
 
 <h1>Input Zip Code</h1>
 
+<p id="notice"><%= notice %></p>
+
 <div class="row">
+
 	<div class="span6 offset3">
 
 		<%=form_for(Site.new, url: '/input/save' ) do |f| %>
-		    <!--<%#= render 'shared/error_messages', object: f.object %>-->
+		    <%#= render 'shared/error_messages', object: f.object %>
 			
 			<% if Site.new.errors.any? %>
 				<h2>Errors:</h2>
@@ -16,6 +19,8 @@
 					<% end %>
 				</ul>
 			<% end %>
+
+
 
 			<br> <!-- enters a blank line, ie: line break -->
 			<%= f.label :zip_code %>

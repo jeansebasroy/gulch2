@@ -14,15 +14,11 @@ class UsersController < ApplicationController
  		@user = User.new(user_params)
  		if @user.save
  			sign_in @user
-      #flash.keep[:sucess] = "Welcome to Gulch Solutions!"
- 			#redirect_to '/input'
-      #redirect_to '/input', flash.keep
-      redirect_to '/input'#, flash.keep = "Test"
+      flash[:notice] = 'Welcome to Gulch Solutions!'
+      redirect_to '/input'
  		else
  			
-      #redirect_to '/signup'
-      #redirect_to '/signup', flash.keep
-      redirect_to '/signup'#, flash.keep
+      render 'new'
  		end
  	end
 

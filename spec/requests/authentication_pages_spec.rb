@@ -20,7 +20,7 @@ describe "Authentication" do
 
 			it { should have_title('Sign In') }
 			it { should have_link('Sign up now!')}
-			it { should have_selector('div.alert.alert-error', text: 'Invalid') }
+			it { should have_selector('div.alert.alert-notice', text: 'Invalid email/password combination!') }
 
 			describe "after visiting another page" do
 				before { click_link "Company" }

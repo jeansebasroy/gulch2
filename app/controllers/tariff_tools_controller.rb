@@ -16,16 +16,16 @@ class TariffToolsController < ApplicationController
 						usage: params[:site][:usage_in_kWh], site_id: @site.id)
 	
 			if @site_load_profile.save
-			    flash[:sucess] = "The electricity bill has been created."
+			    flash[:notice] = "Electricity bill has been re-created."
 			    redirect_to '/tool'
 			else
-				flash[:error] = 'WTF'
-				
-				redirect_to '/input'
+				#this changed
+				redirect '/input'
 			end
 		else
 			#flash[:error] = 'WTF'
-			redirect_to '/input', :flash => { :error => "WTF" }
+			#this changed
+			redirect_to '/input'
 		end
 
 	end

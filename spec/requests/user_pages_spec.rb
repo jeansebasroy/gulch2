@@ -31,7 +31,7 @@ describe "User Pages" do
       it { should have_link('Sign In') }
       it { should_not have_link('Sign Out') }
       it { should have_content('Sign In') }
-      it { should have_selector('div.alert.alert-error') }
+      it { should have_selector('div.alert.alert-notice', text: 'Invalid email/password combination!') }
     
     end
 
@@ -142,7 +142,7 @@ describe "User Pages" do
         it { should have_title('Input') }
         it { should have_link('Sign Out') }
         it { should_not have_link('Sign In') }
-        it { should have_selector('div.alert.alert-success', text: 'Welcome to Gulch Solutions') }
+        it { should have_selector('div.alert.alert-notice', text: 'Welcome to Gulch Solutions') }
       end
     end
   end
