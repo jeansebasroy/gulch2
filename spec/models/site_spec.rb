@@ -55,10 +55,10 @@ describe Site do
 	end
 
 # square_feet
-	describe "when square_feet is not a number" do
-		before { @site.square_feet = "square feet" }
-		it { should_not be_valid }
-	end
+#	describe "when square_feet is not a number" do
+#		before { @site.square_feet = "square feet" }
+#		it { should_not be_valid }
+#	end
 
 # user_id
 	describe "when user_id is not present" do

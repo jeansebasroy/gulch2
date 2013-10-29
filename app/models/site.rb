@@ -11,4 +11,6 @@ class Site < ActiveRecord::Base
 	# should only be present when site is being saved	
 	# validates :site_name, presence: true
 
+	accepts_nested_attributes_for :site_load_profiles
+
 end

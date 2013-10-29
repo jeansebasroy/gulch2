@@ -2,7 +2,6 @@ class TariffToolsController < ApplicationController
 	before_action :signed_in_user
 
 	def new
-		#@tariff_tools = Site.new
 	end
 
 
@@ -11,26 +10,33 @@ class TariffToolsController < ApplicationController
 						user_id: "1")
 
 		if @site.save 
-			@site_load_profile = SiteLoadProfile.new(meter_read_date: params[:site][:bill_date],
-						tou: "All",	demand: params[:site][:demand_in_kW], 
-						usage: params[:site][:usage_in_kWh], site_id: @site.id)
+			@site_load_profile = SiteLoadProfile.new(meter_read_date: params[:site_load_profile][:bill_date],
+						tou: "All",	demand: params[:site_load_profile][:demand_in_kW], 
+						usage: params[:site_load_profile][:usage_in_kWh], site_id: @site.id)
 	
 			if @site_load_profile.save
 			    flash[:notice] = "Electricity bill has been re-created."
 			    redirect_to '/tool'
 			else
-				#this changed
-				redirect '/input'
+				render 'input'
 			end
 		else
-			#flash[:error] = 'WTF'
-			#this changed
-			redirect_to '/input'
+			#redirect_to '/input'
+			render 'input'
 		end
 
 	end
 	
 	def index
+	end
+
+
+	def input
+		@site = Site.new
+		@site_load_profile = SiteLoadProfile.new
+	end
+
+	def self.input
 	end
 
 end

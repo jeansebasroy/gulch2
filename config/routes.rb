@@ -12,7 +12,7 @@ Gulch2::Application.routes.draw do
   match '/input',   to: 'tariff_tools#input',   via: 'get'
   match '/tool',    to: 'tariff_tools#tool',    via: 'get'
 
-  match '/input/save', to: 'tariff_tools#create', via: 'post'
+  match '/input/save',  to: 'tariff_tools#create', via: 'post'
       #fix this hack
 
 
