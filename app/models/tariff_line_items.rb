@@ -9,7 +9,16 @@ class TariffLineItems < ActiveRecord::Base
 			 	foreign_key: "tariff_line_item_id"
 	has_many :tariff_indexed_rate,
 			 	foreign_key: "tariff_line_item_id"
+
+	validates :line_item_name, presence: true
+	validates :line_item_type, presence: true
+	validates :effective_date, presence: true
+	#validates :line_item_rate, presence: true, unless: [:tariff_type == "Stepped" || :tariff_type == "Indexed rate"]
+	validates :tou_type, presence: true
+	validates :bill_group_order, presence: true
 	validates :tariff_tariff_id, presence: true
+	validates :tariff_season_id, presence: true
+	validates :tariff_bill_group_id, presence: true
 
 	# Pulls the applicable line item based on tariff
 	def self.line_items(tariffs, date, season)

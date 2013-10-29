@@ -1,4 +1,8 @@
 class TariffZipCode < ActiveRecord::Base
-		has_many :tariff_territory_zip_code_rel,
+	has_many :tariff_territory_zip_code_rel,
 				foreign_key: "tariff_zip_code_id"
+
+	validates :zip_code, numericality: true, 
+				length: {minimum: 5, maximum: 5}
+
 end

@@ -23,6 +23,9 @@ describe User do
   	it { should respond_to(:password_confirmation) }
     it { should respond_to(:remember_token) }
   	it { should respond_to(:authenticate) }
+    it { should respond_to(:sites)}
+
+    it { should be_valid }
 
 # First name
   	describe "when first_name is not present" do

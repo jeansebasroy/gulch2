@@ -1,9 +1,21 @@
+<title>Inputs</title>
+
 <h1>Input Zip Code</h1>
 
 <div class="row">
 	<div class="span6 offset3">
-		
-		<%=form_for(:session, url: sessions_path) do |f| %>
+
+		<%=form_for(Site.new, url: '/input/save' ) do |f| %>
+		    <!--<%#= render 'shared/error_messages', object: f.object %>-->
+			
+			<% if Site.new.errors.any? %>
+				<h2>Errors:</h2>
+				<ul>
+					<% Site.new.errors.full_messages.each do |message| %>
+						<li><%= message %></li>
+					<% end %>
+				</ul>
+			<% end %>
 
 			<br> <!-- enters a blank line, ie: line break -->
 			<%= f.label :zip_code %>

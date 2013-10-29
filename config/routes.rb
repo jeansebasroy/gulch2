@@ -11,7 +11,10 @@ Gulch2::Application.routes.draw do
   match '/signout', to: 'sessions#destroy',     via: 'get'
   match '/input',   to: 'tariff_tools#input',   via: 'get'
   match '/tool',    to: 'tariff_tools#tool',    via: 'get'
-  
+
+  match '/input/save', to: 'tariff_tools#create', via: 'post'
+      #fix this hack
+
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

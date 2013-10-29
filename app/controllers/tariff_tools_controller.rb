@@ -1,18 +1,36 @@
 class TariffToolsController < ApplicationController
 	before_action :signed_in_user
 
-
-	def index
+	def new
+		#@tariff_tools = Site.new
 	end
 
-	def create
-		@zip = params[:tariff_input][:zip_code]
-		#session[:demand_in_kW] = params[:session][:demand_in_kW]
-		#session[:usage_in_kWh] = params[:session][:usage_in_kWh]
-		#session[:bill_date] = params[:session][:bill_date]
-		#session[:phases] = params[:session][:phases]
 
-		redirect_to tool_path
+	def create
+		@site = Site.new(zip_code: params[:site][:zip_code], phases: params[:site][:phases],
+						user_id: "1")
+
+		if @site.save 
+			@site_load_profile = SiteLoadProfile.new(meter_read_date: params[:site][:bill_date],
+						tou: "All",	demand: params[:site][:demand_in_kW], 
+						usage: params[:site][:usage_in_kWh], site_id: @site.id)
+	
+			if @site_load_profile.save
+			    flash[:sucess] = "The electricity bill has been created."
+			    redirect_to '/tool'
+			else
+				flash[:error] = 'WTF'
+				
+				redirect_to '/input'
+			end
+		else
+			#flash[:error] = 'WTF'
+			redirect_to '/input', :flash => { :error => "WTF" }
+		end
+
+	end
+	
+	def index
 	end
 
 end

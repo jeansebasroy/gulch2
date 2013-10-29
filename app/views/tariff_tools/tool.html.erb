@@ -1,12 +1,14 @@
+<title>Bill Comparison</title>
+
 <h1>Bill Comparison (Demo)</h1>
 
 <div class="top"> <!-- gets all the data needed to display the bill -->
 	<p>
-	<% @zip = session[:zip_code] %>
-	<% @demand = session[:demand_in_kW] %>
-	<% @usage = session[:usage_in_kWh] %>
-	<% @date = session[:bill_date] %>
-	<% @phases = session[:phases] %>
+	<% @zip = Site.last.zip_code %>
+	<% @demand = SiteLoadProfile.last.demand %>
+	<% @usage = SiteLoadProfile.last.usage %>
+	<% @date = SiteLoadProfile.last.meter_read_date %>
+	<% @phases = Site.last.phases %>
 
 	<% @utility = TariffUtility.utility(@zip) %> 
 	<% @territory = TariffTerritory.territory(@zip) %>

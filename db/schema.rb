@@ -11,10 +11,40 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131008160607) do
+ActiveRecord::Schema.define(version: 20131016200634) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "site_load_profiles", force: true do |t|
+    t.date     "meter_read_date"
+    t.string   "tou"
+    t.decimal  "demand"
+    t.decimal  "usage"
+    t.datetime "interval_date_time"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "site_id"
+  end
+
+  create_table "sites", force: true do |t|
+    t.string   "site_name"
+    t.string   "company"
+    t.string   "industry_type"
+    t.string   "building_type"
+    t.string   "description"
+    t.string   "address"
+    t.string   "city"
+    t.string   "state"
+    t.string   "zip_code"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.decimal  "square_feet"
+    t.string   "phases"
+    t.integer  "user_id"
+    t.binary   "site_saved"
+    t.boolean  "is_site_saved"
+  end
 
   create_table "tariff_bill_groups", force: true do |t|
     t.string   "bill_group_name"

@@ -14,10 +14,15 @@ class UsersController < ApplicationController
  		@user = User.new(user_params)
  		if @user.save
  			sign_in @user
-      flash[:sucess] = "Welcome to Gulch Solutions!"
- 			redirect_to '/input'
+      #flash.keep[:sucess] = "Welcome to Gulch Solutions!"
+ 			#redirect_to '/input'
+      #redirect_to '/input', flash.keep
+      redirect_to '/input'#, flash.keep = "Test"
  		else
- 			render 'new'
+ 			
+      #redirect_to '/signup'
+      #redirect_to '/signup', flash.keep
+      redirect_to '/signup'#, flash.keep
  		end
  	end
 
@@ -34,7 +39,7 @@ class UsersController < ApplicationController
       render 'edit'
     end
   end
-
+  
 
   private
 

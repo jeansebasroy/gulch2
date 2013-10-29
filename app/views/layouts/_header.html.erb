@@ -4,7 +4,7 @@
       <%= link_to "Gulch Solutions", root_path, id: "logo" %>
       <ul class="nav pull-right">
       	  <% if signed_in? %>
-            <li><%= link_to "Profile",          current_user %></li>
+            <li><%#= link_to "Profile",          current_user %></li>
             <li><%= link_to "Bill Comparison",  '/input' %></li>
             <li><%= link_to "Sign Out",         signout_path %></li>            
           <% else %>

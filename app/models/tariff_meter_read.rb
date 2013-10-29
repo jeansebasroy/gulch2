@@ -1,6 +1,12 @@
 class TariffMeterRead < ActiveRecord::Base
 	belongs_to :tariff_territories
-	validates :tariff_territories_id, presence: true
+
+	validates :meter_read_date, presence: true
+	validates :billing_month, presence:true
+	validates :billing_year, presence: true, numericality: true,
+				length: {minimum: 4, maximum: 4}
+	validates :tariff_territory_id, presence: true
+
 
 	# returns the meter_read definition (start_date, end_date, month_name, billing_year) based on date
 	def self.meter_read(date, zip)

@@ -2,6 +2,9 @@ class TariffTariff < ActiveRecord::Base
 	belongs_to :tariff_billing_class
 	has_many :tariff_line_items, 
 				foreign_key: "tariff_tariff_id"
+
+	validates :tariff_name, presence: true
+	validates :tariff_type, presence: true
 	validates :tariff_billing_class_id, presence: true
 
 	# Pulls the applicable tariff based on billing class

@@ -4,6 +4,13 @@ class TariffBillingClass < ActiveRecord::Base
 				foreign_key: "tariff_billing_class_id"
 	has_many :tariff_bill_group,
 				foreign_key: "tariff_billing_class_id"
+	validates :billing_class_name, presence: true
+	validates :customer_type, presence: true
+	validates :phases, presence: true
+	validates :voltage, presence: true
+	validates :units, presence: true
+	validates :start_value, presence: true, numericality: true
+	#validates :end_value, numericality: true
 	validates :tariff_territory_id, presence: true
 
 	# Pulls the billing_class based on zip_code and demand
