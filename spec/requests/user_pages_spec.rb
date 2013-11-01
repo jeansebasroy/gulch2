@@ -137,8 +137,7 @@ describe "User Pages" do
 
       describe "after saving the user" do
         before { click_button submit }
-        #let(:user) { User.find_by(email: 'user@example.com') }
-
+      
         it { should have_title('Input') }
         it { should have_link('Sign Out') }
         it { should_not have_link('Sign In') }

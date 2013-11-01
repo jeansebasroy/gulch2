@@ -4,40 +4,34 @@
 
 <p id="notice"><%= notice %></p>
 
-<div class="top"> <!-- gets all the data needed to display the bill -->
-	<p>
-	<% @zip = Site.last.zip_code %>
-	<% @demand = SiteLoadProfile.last.demand %>
-	<% @usage = SiteLoadProfile.last.usage %>
-	<% @date = SiteLoadProfile.last.meter_read_date %>
-	<% @phases = Site.last.phases %>
+<% @zip = Site.last.zip_code %>
+<% @demand = SiteLoadProfile.last.demand %>
+<% @usage = SiteLoadProfile.last.usage %>
+<% @date = SiteLoadProfile.last.meter_read_date %>
+<% @phases = Site.last.phases %>
 
-	<% @utility = TariffUtility.utility(@zip) %> 
-	<% @territory = TariffTerritory.territory(@zip) %>
-	<% @season = TariffSeason.season(@date, @zip) %> 
-	<% @tou = TariffTou.tou(@date, @zip) %>
-	<% @meter_read = TariffMeterRead.meter_read(@date, @zip) %>
-	<% @billing_class = TariffBillingClass.billing_class(@zip, @demand, @usage, @phases) %>
-	<% @tariffs = TariffTariff.tariffs(@billing_class) %>
-	<% @line_items = TariffLineItems.line_items(@tariffs, @date, @season) %>
-	<% @bill_groups = TariffBillGroup.bill_groups(@billing_class) %>	
-	</P>
+<% @territory = TariffTerritory.territory(@zip) %>
+<% @utility = TariffUtility.utility(@zip) %> 
+<% @season = TariffSeason.season(@date, @zip) %> 
+<% @tou = TariffTou.tou(@date, @zip) %>
+<% @meter_read = TariffMeterRead.meter_read(@date, @zip) %>
+<% @billing_class = TariffBillingClass.billing_class(@zip, @demand, @usage, @phases) %>
+<% @tariffs = TariffTariff.tariffs(@billing_class) %>
+<% @line_items = TariffLineItems.line_items(@tariffs, @date, @season) %>
+<% @bill_groups = TariffBillGroup.bill_groups(@billing_class) %>	
+
+<div class="top"> <!-- gets all the data needed to display the bill -->
 	<!-- shows the utility and billing period -->
 	<p>
-	<%= @date %>
-</p>
-<p>
-	<%= @utility.utility_name %>
+		<%= @date %>
+		<%= @utility.utility_name %>
 	</p>
 	<p>
 	
-	<strong> Billing Period: <%= @meter_read["start_date"] %> to <%= @meter_read["end_date"] %> </strong>
-	</p>
+		<strong> Billing Period: <%= @meter_read["start_date"] %> to <%= @meter_read["end_date"] %> </strong>
 	</p>
 
-
- <!-- this area shows the header information for the bill -->
-	
+	 <!-- this area shows the header information for the bill -->
  	<p>
 		kWh used = <%= @usage %>
 	</p>
@@ -49,19 +43,17 @@
 	</p>
 </div>
 
-	<!-- sorts the line items by bill group -->
-	<% @line_items.sort_by{ |i| i.bill_group_order} %>
-	<% @bill_groups.sort_by{ |i| i.bill_group_order} %>
-
-
-
+<!-- sorts the line items by bill group -->
+<% @line_items.sort_by{ |i| i.bill_group_order} %>
+<% @bill_groups.sort_by{ |i| i.bill_group_order} %>
 
 <% @bill_total = 0 %>
 <% @bill_groups.each do |j| %>
+
 	<!-- shows the name of the section of the bill -->
 	<h5><%= j.bill_group_name %></h5>
 
-	
+		
 	<table> <!-- to test my understanding of tables -->
 		<% @bill_group_total = 0 %>
 		<% @line_items.each do |i| %>
@@ -123,11 +115,9 @@
 										<td> kW </td> 	<!-- value label -->
 										<td> x </td>	<!-- math symbol -->
 										<td> <%= number_to_currency(k.line_item_rate, precision: 6) %> </td> 	<!-- rate -->
-										<td> 
-											
+										<td> 											
 											<% @bill_group_total += (k.line_item_rate * @temp_value) %>
 											<%= number_to_currency(k.line_item_rate * @temp_value) %> <!-- total -->
-
 										</td>
 									</tr> 
 								<% end %>
@@ -162,24 +152,26 @@
 						<% end %>
 					<% else %>
 						<td> <%= i.line_item_type %> </td>
-
 					<% end %>
 				</tr>
 			<% end %>
 		<% end %>
-		
+			
 	</table>
-	<!-- determines the total for that section of the bill -->
+
+		<!-- determines the total for that section of the bill -->
 	<div class="group">
-	<p>&nbsp &nbsp &nbsp &nbsp &nbsp Total for <%= j.bill_group_name %> = <%= number_to_currency(@bill_group_total) %>
-	<% @bill_total += @bill_group_total %></p>
+		<p>
+			&nbsp &nbsp &nbsp &nbsp &nbsp Total for <%= j.bill_group_name %> = <%= number_to_currency(@bill_group_total) %>
+		<% @bill_total += @bill_group_total %>
+		</p>
 	</div>
 <% end %>
 
 <div class="total">
-<h4>
-	Total Bill = <%= number_to_currency(@bill_total) %>
-</h4>
+	<h4>
+		Total Bill = <%= number_to_currency(@bill_total) %>
+	</h4>
 </div>
 
 <br>
@@ -187,5 +179,4 @@
 <br>
 <br>
 <br>
-
 

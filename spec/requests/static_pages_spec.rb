@@ -43,9 +43,9 @@ describe "Static Pages" do
 		before { visit contact_path }
 
 		it { should have_content('email') }
-		it { should have_content('info@gulchsolutions.com') }
-		it { should have_content('call') }
-		it { should have_content('630-248-0777') }
+#		it { should have_content('info@gulchsolutions.com') }
+#		it { should have_content('call') }
+#		it { should have_content('630-248-0777') }
 	
 		it { should have_content('View Demo') }
 		it { should have_content('Contact') }
