@@ -9,7 +9,7 @@ class TariffTerritory < ActiveRecord::Base
 
 	# Pulls the territory based on a zip code
 	def self.territory(zip)
-		@zip_code = TariffZipCode.find_by(zip_code: zip)
+		@zip_code = TariffZipCode.zip_code(zip)
 
 		@zip_territory_rel = TariffTerritoryZipCodeRel.find_by(tariff_zip_code_id: @zip_code.id)
 		@territory = TariffTerritory.find_by(id: @zip_territory_rel.tariff_territory_id)

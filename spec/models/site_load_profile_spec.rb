@@ -25,6 +25,11 @@ describe SiteLoadProfile do
 		it { should_not be_valid }
 	end
 
+	describe "when meter_read_date is invalid" do
+		before { @site_load_profile.meter_read_date = "9999-99-99"}
+		it { should_not be_valid }
+	end
+
 # tou
 	describe "when tou is not present" do
 		before { @site_load_profile.tou = " " }

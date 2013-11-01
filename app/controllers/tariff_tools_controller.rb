@@ -26,10 +26,55 @@ class TariffToolsController < ApplicationController
 					flash[:notice] = "Zip Code is currently not supported. 
 						Please contact sales@gulchsolutions.com for more information."
 			    	redirect_to '/input'
-				else
-					flash[:notice] = "Electricity bill has been re-created."
-			    	redirect_to '/tool'
-			    end
+			    
+			    elsif (TariffTerritory.territory(@zip).nil? || TariffUtility.utility(@zip).nil? || 
+			    		(TariffSeason.season(@date, @zip).count < 2) || 
+			    		(TariffBillingClass.billing_class(@zip, @demand, @usage, @phases).count != 1) )
+
+					flash[:notice] = "Data input has returned an error.  Verify the data input and try again. 
+						Contact support@gulchsolutions.com for more details."
+			    	#flash[:notice] = "Data input has resulted in an invalid Territory, Utility, Season, or Billing Class."
+			    	redirect_to '/input'
+
+				else 
+			    	@territory = TariffTerritory.territory(@zip)
+					@utility = TariffUtility.utility(@zip)
+					@season = TariffSeason.season(@date, @zip)
+					@billing_class = TariffBillingClass.billing_class(@zip, @demand, @usage, @phases)
+
+					if (TariffTou.tou(@date, @zip).nil? || TariffMeterRead.meter_read(@date, @zip).nil? ||
+						TariffTariff.tariffs(@billing_class).nil? || TariffBillGroup.bill_groups(@billing_class).nil?)
+
+						flash[:notice] = "Data input has returned an error.  Verify the data input and try again.  
+							Contact support@gulchsolutions.com for more details."
+				    	#flash[:notice] = "Data input has resulted in an invalid Tariff or Bill Group."
+				    	redirect_to '/input'
+
+					else
+
+						@meter_read = TariffMeterRead.meter_read(@date, @zip)
+						@tou = TariffTou.tou(@date, @zip)
+						@tariffs = TariffTariff.tariffs(@billing_class)
+						@bill_groups = TariffBillGroup.bill_groups(@billing_class)
+
+						if TariffLineItems.line_items(@tariffs, @date, @season).nil?
+
+							flash[:notice] = "Data input has returned an error.  Verify the data input and try again.  
+								Contact support@gulchsolutions.com for more details."
+					    	#flash[:notice] = "Data input has resulted in an invalid Line Items."
+					    	redirect_to '/input'
+
+					    else
+					
+					    	flash[:notice] = "Electricity bill has been re-created."
+					    	redirect_to '/tool'
+					
+					    end
+
+				    end
+
+				end
+				
 			else
 				render 'input'
 			end

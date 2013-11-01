@@ -41,8 +41,8 @@
 				<%= g.text_field :usage_in_kWh, {:value => '10000' } %>
 
 				<br> <!-- enters a blank line, ie: line break -->
-				<%= g.label :bill_date %>
-				<%= g.text_field :bill_date, {:value => '10/1/2013' } %>
+				<%= g.label :bill_date, "Bill Date (yyyy-mm-dd)" %>
+				<%= g.text_field :bill_date, {:value => '2013-10-01' } %>
 
 			<% end %>
 

@@ -33,8 +33,6 @@ describe TariffBillingClass do
 
   	# -> validate for "Commercial", "Industrial" or "Residential"
 
-
-
 # phases 
   	describe "when phases is not present" do
   		before { @tariff_billing_class.phases = " " }
