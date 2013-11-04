@@ -32,10 +32,6 @@ describe "User Pages" do
       it { should_not have_link('Sign Out') }
       it { should have_content('Sign In') }
       it { should have_selector('div.alert.alert-notice', text: 'Invalid email/password combination!') }
-
-      it "does not email info@gulchsolutions.com" do   
-        last_email.should be_nil
-      end
     
     end
 
@@ -52,11 +48,6 @@ describe "User Pages" do
       it { should have_title('Input') }
       it { should_not have_link('Sign In') }
       it { should have_link('Sign Out') }
-
-      it "emails new user info to info@gulchsolutions.com" do
-        last_email.to.should == 'info@gulchsolutions.com'
-        #last_email.to.should include('info@gulchsolutions.com')
-      end
               
       describe "followed by signout" do
         before { click_link "Sign Out" }
@@ -122,6 +113,10 @@ describe "User Pages" do
         it { should have_selector('div.alert.alert-error') }
       end
 
+      it "does not email info@gulchsolutions.com" do   
+        last_email.should be_nil
+      end
+
     end
 
     describe "with valid information" do
@@ -151,6 +146,18 @@ describe "User Pages" do
         it { should have_link('Sign Out') }
         it { should_not have_link('Sign In') }
         it { should have_selector('div.alert.alert-notice', text: 'Welcome to Gulch Solutions') }
+      
+        it "emails new user info to info@gulchsolutions.com" do
+
+          last_email.to.should eq(["info@gulchsolutions.com"])
+        
+        end
+
+        it "emails new user Welcome Email" do
+
+          #last_email.to.should eq([user.email])
+
+        end
       end
     end
   end
