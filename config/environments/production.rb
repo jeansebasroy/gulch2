@@ -68,9 +68,9 @@ Gulch2::Application.configure do
   config.action_mailer.delivery_method = :smtp
   ActionMailer::Base.smtp_settings = {
     :address => "smtpout.secureserver.net",
-    :port => 25,
+    :port => 80,
     :user_name => "support@gulchsolutions.com",
-    :password => ENV['SMTP_PASSSWORD'],
+    :password => 'youknow1,
     :authentication => :plain
   }
 
