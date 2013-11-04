@@ -13,4 +13,22 @@ describe UserMailer do
     end
   end
 
+  describe "new user" do
+    let(:user) { FactoryGirl.create(:user) }
+    let(:mail) { UserMailer.new_user_info(user) }
+
+    it "info sent to info@gulchsolutions.com" do
+      mail.subject.should eq("New User Sign Up")
+      mail.to.should eq(["info@gulchsolutions.com"])
+      mail.from.should eq(["from@example.com"])
+      #mail.body.encoded.should match(edit_password_reset_path(user.password_reset_token))
+    end
+
+    it "gets a welcome email" do
+#      mail.subject.should eq("Welcome to Gulch Solutions")
+#      mail.to.should eq([user.email])
+#      mail.from.should eq(["from@example.com"])
+      #mail.body.encoded.should match(edit_password_reset_path(user.password_reset_token))
+    end
+  end
 end
