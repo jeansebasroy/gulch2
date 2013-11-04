@@ -70,7 +70,7 @@ Gulch2::Application.configure do
     :address => "smtpout.secureserver.net",
     :port => 80,
     :user_name => "support@gulchsolutions.com",
-    :password => 'youknow1',
+    :password => ENV['SMTP_PASSWORD'],
     :authentication => :plain
   }
 
