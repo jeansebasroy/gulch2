@@ -15,10 +15,13 @@
       <%= f.password_field :password %>
       <br>
       <%= f.submit "Sign in", class: "btn btn-medu btn-custom" %>
+      <br>
+      <%= link_to "Reset Password", new_password_reset_path %>
     <% end %>
-<h6>
-New user? <%= link_to "Sign up now!", signup_path %> 
-</h6>
     
+    <h6>
+    New user? <%= link_to "Sign up now!", signup_path %> 
+    </h6>
+      
   </div>
 </div>

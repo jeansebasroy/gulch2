@@ -2,6 +2,7 @@ Gulch2::Application.routes.draw do
   resources :tarifftools
   resources :sessions, only: [:new, :create, :destroy]
   resources :users
+  resources :password_resets
 
   root 'static_pages#home'
   match '/company', to: 'static_pages#company', via: 'get'

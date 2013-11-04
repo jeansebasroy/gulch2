@@ -18,19 +18,19 @@
 
 <div class="left">
       <%= f.label :email %>
-      <%= f.text_field :email %>
+      <%= f.email_field :email %>
       <!-- <br> --> <!-- enters a blank line, ie: line break --> </div>
 <div class="right">
       <%= f.label :phone %>
-      <%= f.text_field :phone %>
+      <%= f.telephone_field :phone %>
       <!-- <br>  --><!-- enters a blank line, ie: line break --></div>
 <div class="left">
       <%= f.label :company %>
       <%= f.text_field :company %>
       <!-- <br> --> <!-- enters a blank line, ie: line break --></div>
 
-      <div class="right">
-        <%= f.label :address %>
+<div class="right">
+      <%= f.label :address %>
       <%= f.text_field :address %>
       <!-- <br>  --><!-- enters a blank line, ie: line break --></div>
 
@@ -45,7 +45,7 @@
 </div>
 
 <div class="left">      
-  <%= f.label :zip %>
+      <%= f.label :zip %>
       <%= f.text_field :zip %>
     <!--   <br> --> <!-- enters a blank line, ie: line break --></div>
     <br>
