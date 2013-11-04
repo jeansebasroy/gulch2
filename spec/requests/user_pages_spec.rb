@@ -147,9 +147,9 @@ describe "User Pages" do
         it { should_not have_link('Sign In') }
         it { should have_selector('div.alert.alert-notice', text: 'Welcome to Gulch Solutions') }
       
-        it "emails new user info to support@gulchsolutions.com" do
+        it "emails new user info to info@gulchsolutions.com" do
 
-          last_email.to.should eq(["support@gulchsolutions.com"])
+          last_email.to.should eq(["info@gulchsolutions.com"])
         
         end
 
