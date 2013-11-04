@@ -3,16 +3,16 @@ require 'factory_girl_rails'
 
 describe "Password Reset" do 
 	
-  	let(:user) { FactoryGirl.create(:user) }
+  let(:user) { FactoryGirl.create(:user) }
 
 	it "emails user when requesting password reset" do
 	
-      visit signin_path
-      click_link "Reset Password"
-      fill_in "Email", with: user.email
-      click_button "Reset Password"
+    visit signin_path
+    click_link "Reset Password"
+    fill_in "Email", with: user.email
+    click_button "Reset Password"
 
-      page.should have_content('Email sent with password reset instructions.')
+    page.should have_content('Email sent with password reset instructions.')
     
 	  last_email.to.should include(user.email)
 
@@ -20,12 +20,12 @@ describe "Password Reset" do
 	
 	it "does not email user when requesting password reset with invalid email" do
 	
-      visit signin_path
-      click_link "Reset Password"
-      fill_in "Email", with: "nobody@example.com"
-      click_button "Reset Password"
+    visit signin_path
+    click_link "Reset Password"
+    fill_in "Email", with: "nobody@example.com"
+    click_button "Reset Password"
 
-      page.should have_content('Email sent with password reset instructions.')
+    page.should have_content('Email sent with password reset instructions.')
     
 	  last_email.should be_nil
 

@@ -13,11 +13,19 @@ class UsersController < ApplicationController
  	def create
  		@user = User.new(user_params)
  		if @user.save
+
+#      user = User.find_by_email(params[:email])
+#      user.send_password_reset if user
+#      redirect_to signin_path, :notice => "Email sent with password reset instructions."
+
+#      UserMailer.new_user_info(@user).deliver
+ 
+      @user.send_new_user_info
+      
  			sign_in @user
       flash[:notice] = 'Welcome to Gulch Solutions!'
       redirect_to '/input'
- 		else
- 			
+ 		else	
       render 'new'
  		end
  	end

@@ -10,4 +10,15 @@ class UserMailer < ActionMailer::Base
     @user = user
     mail :to => user.email, :subject => "Password Reset"
   end
+
+  def new_user_info(user)
+    @user = user
+    mail :to => 'info@gulchsolutions.com', :subject => "New User Sign Up"
+  end
+
+  def new_user_welcome(user)
+    @user = user
+    mail :to => user.email, :subject => "Welcome to Gulch Solutions"
+  end
+
 end
