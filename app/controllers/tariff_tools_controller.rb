@@ -23,6 +23,7 @@ class TariffToolsController < ApplicationController
 				@phases = Site.last.phases
 
 				if TariffZipCode.zip_code(@zip).nil?
+					TariffMailer.zip_db_missing(@site).deliver
 					flash[:notice] = "Zip Code is currently not supported. 
 						Please contact sales@gulchsolutions.com for more information."
 			    	redirect_to '/input'

@@ -89,7 +89,7 @@ describe "Tariff Tool pages" do
 
 				before do
 					fill_in "Zip code",					with: "00001"
-	       			select "3-phase", 					from: "Phases"
+	       			select  "3-phase", 					from: "Phases"
     	   			fill_in "Demand (in kW)",			with: "100"
        				fill_in "Usage (in kWh)",			with: "10000"
        				fill_in "Bill Date (yyyy-mm-dd)",   with: "2013-10-01"
@@ -100,9 +100,21 @@ describe "Tariff Tool pages" do
 				it { should_not have_title('Bill Comparison') }
 		        it { should have_selector('div.alert.alert-notice', text: 'Zip Code is currently not supported.') }
 
+		        it "emails invalid zip code to support@gulchsolutions.com" do
+		        
+			        last_email.to.should eq(["support@gulchsolutions.com"])
+
+		        end
+
 			end
 
 			describe "with zip code outside permissions area" do
+
+		        #it "emails new user info to info@gulchsolutions.com" do
+
+		        #  last_email.to.should eq(["info@gulchsolutions.com"])
+		        
+		        #end
 
 			end
 
@@ -110,7 +122,7 @@ describe "Tariff Tool pages" do
 
 				before do
 					fill_in "Zip code",					with: "00000"
-	       			select "3-phase", 					from: "Phases"
+	       			select  "3-phase", 					from: "Phases"
     	   			fill_in "Demand (in kW)",			with: "-1"
        				fill_in "Usage (in kWh)",			with: "10000"
        				fill_in "Bill Date (yyyy-mm-dd)",   with: "2013-10-01"
@@ -129,7 +141,7 @@ describe "Tariff Tool pages" do
 
 			before do
        			fill_in "Zip code",      			with: "00000"
-       			select "3-phase", 					from: "Phases"
+       			select  "3-phase", 					from: "Phases"
        			fill_in "Demand (in kW)",			with: "100"
        			fill_in "Usage (in kWh)",			with: "10000"
        			fill_in "Bill Date (yyyy-mm-dd)",  	with: "2013-10-01"
