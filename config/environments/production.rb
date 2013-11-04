@@ -71,7 +71,7 @@ Gulch2::Application.configure do
     :port => 25,
     :user_name => "support@gulchsolutions.com",
     :password => ENV['SMTP_PASSSWORD'],
-    :authentication => :login
+    :authentication => :plain
   }
 
 
