@@ -1,5 +1,6 @@
 class UserMailer < ActionMailer::Base
-  default from: "support@gulchsolutions.com"
+  default from: 'support@gulchsolutions.com'
+  default bcc:  'support@gulchsolutions.com'
 
   # Subject can be set in your I18n file at config/locales/en.yml
   # with the following lookup:
