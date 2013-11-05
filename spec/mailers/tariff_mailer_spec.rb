@@ -18,36 +18,21 @@ describe TariffMailer do
 
   end
 
-#  describe "password_reset" do
-#    let(:user) { FactoryGirl.create(:user, :password_reset_token => "anything") }
-#    let(:mail) { UserMailer.password_reset(user) }
+  describe "user data input resulting in invalid result from database" do
+    let(:site) { FactoryGirl.create(:site) }
+    let(:site_load_profile) { FactoryGirl.create(:site_load_profile) }
+    let(:mail) { TariffMailer.database_error(site, site_load_profile) }
 
-#    it "sends user password reset url" do
-#      mail.subject.should eq("Password Reset")
-#      mail.to.should eq([user.email])
-#      mail.from.should eq(["support@gulchsolutions.com"])
-#      mail.body.encoded.should match(edit_password_reset_path(user.password_reset_token))
-#    end
-#  end
+    it "sends email with missing zip to support@gulchsolutions.com" do
+      mail.subject.should eq("Error: Tariff Tool Input has Resulted in Database Error")
+      mail.to.should eq(["support@gulchsolutions.com"])
+      mail.body.should match(site.zip_code)
+      mail.body.should match(site_load_profile.demand.to_s)
+      mail.body.should match(site_load_profile.usage.to_s)
+      mail.body.should match(site_load_profile.meter_read_date.to_s)
+      #include contact info from submitted user
+    end
 
-#  describe "new user" do
-#    let(:user) { FactoryGirl.create(:user) }
-#    let(:mail) { UserMailer.new_user_info(user) }
-
-#    it "info sent to info@gulchsolutions.com" do
-#      mail.subject.should eq("New User Sign Up")
-#      mail.to.should eq(["info@gulchsolutions.com"])
-#      mail.body.should match(user.first_name)
-#      mail.body.should match(user.last_name)
-#      mail.body.should match(user.email)
-#      mail.body.should match(user.phone)
-#    end
-
-#    it "gets a welcome email" do
-#      mail.subject.should eq("Welcome to Gulch Solutions")
-#      mail.to.should eq([user.email])
-#    end
-#  end
-
+  end
 
 end

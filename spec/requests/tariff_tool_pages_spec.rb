@@ -5,9 +5,6 @@ describe "Tariff Tool pages" do
   
 	subject { page } 
 
-    #let(:sign_in) { "Sign in" }  
-    #let(:submit) { "Submit" }
-
 	let(:user) { FactoryGirl.create(:user) }
     before { visit signin_path }
     	
@@ -16,55 +13,45 @@ describe "Tariff Tool pages" do
        	fill_in "Password",     with: user.password
        	click_button "Sign in"
     end
-
-    #before { click_button sign_in }
-	# before { visit '/input' }
-	# need to use correct 'path'
 	
 	describe "Input page" do
 
-		#let(:utility) 		{ FactoryGirl.create(:tariff_utility) }
-		#let(:territory) 	{ FactoryGirl.create(:tariff_territory) }
-		#let(:zip_code) 		{ FactoryGirl.create(:tariff_zip_code) }
-		#let(:territory_zip)	{ FactoryGirl.create(:tariff_territory_zip_code_rel) }
+		let(:utility) 				{ FactoryGirl.create(:tariff_utility) }
+		let(:territory) 			{ FactoryGirl.create(:tariff_territory, tariff_utility: utility) }
+		let(:zip_code) 				{ FactoryGirl.create(:tariff_zip_code) }
+		#let(:territory_zip)	{ FactoryGirl.create(:tariff_territory_zip_code_rel, 
+		#								tariff_territory: territory, tariff_zip_code: zip_code) }
+		let(:season_all)			{ FactoryGirl.create(:tariff_season_all, tariff_territory: territory) }
+		let(:season_winter)			{ FactoryGirl.create(:tariff_season_winter, tariff_territory: territory) }
+		#let(:meter_read_october)	{ FactoryGirl.create(:tariff_meter_read_october, 
+		#								tariff_territory: territory) }
+		#let(:meter_read_november)	{ FactoryGirl.create(:tariff_meter_read_november,
+		#								tariff_territory: territory)}
+		let(:billing_class)			{ FactoryGirl.create(:tariff_billing_class, tariff_territory: territory) }
+		let(:tariff_energy)			{ FactoryGirl.create(:tariff_tariff_energy, tariff_billing_class: billing_class) }
+		let(:tariff_delivery)		{ FactoryGirl.create(:tariff_tariff_delivery, tariff_billing_class: billing_class) }
+		let(:bill_group_energy) 	{ FactoryGirl.create(:tariff_bill_group_energy, tariff_billing_class: billing_class) }
+		let(:bill_group_delivery) 	{ FactoryGirl.create(:tariff_bill_group_delivery, tariff_billing_class: billing_class) }
+
+		#let(:line_items_fixed)		{ FactoryGirl.create(:tariff_line_item_fixed, tariff_tariff: tariff_delivery, 
+		#								tariff_season: season_all, tariff_bill_group: bill_group_delivery) }			
+			
 
 		before do
-			@test_utility = TariffUtility.create(utility_name: "JCP&L", 
-				state: "NJ")
-			@test_territory = TariffTerritory.create(territory_name: "JCP&L",
-					tariff_utility_id: @test_utility.id)
-			@test_zip_code = TariffZipCode.create(zip_code: "00000")
-			@test_territory_zip = TariffTerritoryZipCodeRel.create(tariff_territory_id: @test_territory.id,
-					tariff_zip_code_id: @test_zip_code.id)
-			@test_season1 = TariffSeason.create(season_type: "All", season_start_date: "2010-01-01", 
-					season_end_date: "2059-12-31", tariff_territory_id: @test_territory.id)
-			@test_season2 = TariffSeason.create(season_type: "Winter", season_start_date: "2013-09-27", 
-					season_end_date: "2014-01-27", tariff_territory_id: @test_territory.id)
-			#@test_tou = TariffTou.create(tou_type: "Peak", day_of_weeK: "Week", start_time: "08:00:00",
-			#		end_time: "20:00:00", tariff_seasons_id: @test_season.id)
+			@test_territory_zip = TariffTerritoryZipCodeRel.create(tariff_territory_id: territory.id,
+					tariff_zip_code_id: zip_code.id)
 			@test_meter_read1 = TariffMeterRead.create(meter_read_date: "2013-09-27", billing_month: "October", 
-					billing_year: "2013" , tariff_territory_id: @test_territory.id)
+					billing_year: "2013" , tariff_territory_id: territory.id)
 			@test_meter_read2 = TariffMeterRead.create(meter_read_date: "2013-10-29", billing_month: "November", 
-					billing_year: "2013" , tariff_territory_id: @test_territory.id)
-			@test_billing_class = TariffBillingClass.create(billing_class_name: "GS Secondary Medium Three Phase",
-					customer_type: "Commercial", phases: "3-phase", voltage: "Secondary",
-					units: "kW", start_value: "10", end_value: "500", tariff_territory_id: @test_territory.id)
-			@test_tariff1 = TariffTariff.create(tariff_name: "JCP&L Commercial Service (Energy)", 
-					tariff_type: "Energy", tariff_billing_class_id: @test_billing_class.id)
-			@test_tariff2 = TariffTariff.create(tariff_name: "JCP&L Commercial Service (Delivery)", 
-					tariff_type: "Delivery", tariff_billing_class_id: @test_billing_class.id)
-			@test_bill_group1 = TariffBillGroup.create(bill_group_name: "Billing Information For Supplier",
-					bill_group_order: "2", tariff_billing_class_id: @test_billing_class.id)
-			@test_bill_group2 = TariffBillGroup.create(bill_group_name: "Charges from JCP&L", 
-					bill_group_order: "1", tariff_billing_class_id: @test_billing_class.id)
+					billing_year: "2013" , tariff_territory_id: territory.id)
 			@test_line_item1 = TariffLineItems.create(line_item_name: "BGS-FP (Winter)", line_item_type: "$/kWh", 
 					effective_date: "2013-05-29", expiration_date: "", line_item_rate: "0.095672", tou_type: "All",
-					bill_group_order: "1", tariff_tariff_id: @test_tariff1.id, tariff_season_id: @test_season1.id, 
-					tariff_bill_group_id: @test_bill_group1.id)
+					bill_group_order: "1", tariff_tariff_id: tariff_energy.id, tariff_season_id: season_winter.id, 
+					tariff_bill_group_id: bill_group_energy.id)
 			@test_line_item2 = TariffLineItems.create(line_item_name: "Customer Charge", line_item_type: "$/month", 
 					effective_date: "2006-07-15", expiration_date: "", line_item_rate: "11.65", tou_type: "All",
-					bill_group_order: "1", tariff_tariff_id: @test_tariff2.id, tariff_season_id: @test_season1.id, 
-					tariff_bill_group_id: @test_bill_group2.id)
+					bill_group_order: "1", tariff_tariff_id: tariff_delivery.id, tariff_season_id: season_all.id, 
+					tariff_bill_group_id: bill_group_delivery.id)
 		end
 
 		it { should have_title('Input') }
@@ -132,6 +119,12 @@ describe "Tariff Tool pages" do
 				it { should have_title('Input') }
 				it { should_not have_title('Bill Comparison') }
 		        it { should have_selector('div.alert.alert-notice', text: 'Data input has returned an error.') }
+
+				it "emails information resulting in invalid result to support@gulchsolutions.com" do
+		        
+			        last_email.to.should eq(["support@gulchsolutions.com"])
+
+		        end		        
 
 			end
 

@@ -32,6 +32,7 @@ class TariffToolsController < ApplicationController
 			    		(TariffSeason.season(@date, @zip).count < 2) || 
 			    		(TariffBillingClass.billing_class(@zip, @demand, @usage, @phases).count != 1) )
 
+			    	TariffMailer.database_error(@site, @site_load_profile).deliver
 					flash[:notice] = "Data input has returned an error.  Verify the data input and try again. 
 						Contact support@gulchsolutions.com for more details."
 			    	#flash[:notice] = "Data input has resulted in an invalid Territory, Utility, Season, or Billing Class."
@@ -46,6 +47,7 @@ class TariffToolsController < ApplicationController
 					if (TariffTou.tou(@date, @zip).nil? || TariffMeterRead.meter_read(@date, @zip).nil? ||
 						TariffTariff.tariffs(@billing_class).nil? || TariffBillGroup.bill_groups(@billing_class).nil?)
 
+						TariffMailer.database_error(@site, @site_load_profile).deliver
 						flash[:notice] = "Data input has returned an error.  Verify the data input and try again.  
 							Contact support@gulchsolutions.com for more details."
 				    	#flash[:notice] = "Data input has resulted in an invalid Tariff or Bill Group."
@@ -60,6 +62,7 @@ class TariffToolsController < ApplicationController
 
 						if TariffLineItems.line_items(@tariffs, @date, @season).nil?
 
+							TariffMailer.database_error(@site, @site_load_profile).deliver
 							flash[:notice] = "Data input has returned an error.  Verify the data input and try again.  
 								Contact support@gulchsolutions.com for more details."
 					    	#flash[:notice] = "Data input has resulted in an invalid Line Items."

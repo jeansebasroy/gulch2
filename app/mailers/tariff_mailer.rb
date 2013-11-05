@@ -11,4 +11,10 @@ class TariffMailer < ActionMailer::Base
     @site = site
     mail to: "support@gulchsolutions.com", subject: "Notice: Zip Code Missing from Database"
   end
+
+  def database_error(site, site_load_profile)
+    @site = site
+    @site_load_profile = site_load_profile
+    mail to: "support@gulchsolutions.com", subject: "Error: Tariff Tool Input has Resulted in Database Error"
+  end
 end
