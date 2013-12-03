@@ -9,6 +9,8 @@ describe Site do
 								zip_code: "60607", square_feet: "3000", phases: "3-phase",
 								is_site_saved: "0") }
 
+	#let(:site) { FactoryGirl.create(:site, user: :user) }
+
 	subject { @site }
 
 	it { should respond_to(:site_name) }
@@ -23,6 +25,7 @@ describe Site do
 	it { should respond_to(:square_feet) }
 	it { should respond_to(:phases) }
 	it { should respond_to(:user_id) }
+	its(:user) { should eq user }
 	it { should respond_to(:is_site_saved) }
 
 	it { should be_valid }

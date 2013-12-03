@@ -148,12 +148,34 @@ describe "Tariff Tool pages" do
 				it { should_not have_title('Input') }
 
 				it { should have_content('Billing Period:') }
-				it { should have_content('kWh used = ') }
+				it { should have_content('kWh used = 10000') }
 				it { should have_content('Billed Load in kW =') }
-				it { should have_content('Rate:') }
+				it { should have_content('Rate Class:') }
 				it { should have_content('Total Bill =') }
 
 			end	
+
+			describe "update usage on-the-fly" do
+
+				describe "with invalid input" do
+
+				end
+
+				describe "with valid input" do
+
+					before { click_link "(edit usage)" }
+
+					it { should have_content('New Usage:') }
+
+					before do
+						fill_in "New Usage:",			with: "20000"
+						click_button "OK"
+					end
+
+					it { should have_content('kWh used = 20000') }
+
+				end
+			end
 		end
 	end
 end

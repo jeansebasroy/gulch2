@@ -34,12 +34,14 @@
 	 <!-- this area shows the header information for the bill -->
  	<p>
 		kWh used = <%= @usage %>
+		<%#= link_to "(edit usage)" %>
+		<a href="#" onclick="prompt('New Usage:'); return false">(edit usage)</a>
 	</p>
 	<p>
 		Billed Load in kW = <%= @demand %>
 	</p>
 	<p>
-		Rate: <%= @billing_class[0].billing_class_name %>
+		Rate Class: <%= @billing_class[0].billing_class_name %>
 	</p>
 </div>
 

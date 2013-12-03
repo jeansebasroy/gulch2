@@ -4,7 +4,6 @@ class TariffToolsController < ApplicationController
 	def new
 	end
 
-
 	def create
 		@site = Site.new(zip_code: params[:site][:zip_code], phases: params[:site][:phases],
 						user_id: "1")
@@ -92,13 +91,9 @@ class TariffToolsController < ApplicationController
 	def index
 	end
 
-
 	def input
 		@site = Site.new
 		@site_load_profile = SiteLoadProfile.new
-	end
-
-	def self.input
 	end
 
 end
