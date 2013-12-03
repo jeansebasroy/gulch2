@@ -1,9 +1,10 @@
 Gulch2::Application.routes.draw do
-  resources :tarifftools
-  resources :sessions, only: [:new, :create, :destroy]
-  resources :users
   resources :password_resets
-
+  resources :sessions,      only: [:new, :create, :destroy]
+  resources :sites
+  resources :tarifftools
+  resources :users
+  
   root 'static_pages#home'
   match '/company', to: 'static_pages#company', via: 'get'
   match '/contact', to: 'static_pages#contact', via: 'get'

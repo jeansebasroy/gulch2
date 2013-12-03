@@ -83,6 +83,20 @@ describe "Authentication" do
 
 			end
 
+			describe "in the Sites controller" do
+
+				describe "submitting to the create action" do
+					before { post sites_path }
+					specify { expect(response).to redirect_to(signin_path) }
+				end
+
+				describe "submitting to the destroy action" do
+					before { delete site_path(FactoryGirl.create(:site)) }
+					specify { expect(response).to redirect_to(signin_path) }
+				end
+
+			end
+
 		end
 
 		describe "as wrong user" do

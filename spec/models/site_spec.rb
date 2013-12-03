@@ -1,6 +1,7 @@
 require 'spec_helper'
+require 'factory_girl_rails'
 
-describe Site do
+describe "Site" do
 
 	let(:user) { FactoryGirl.create(:user) }
 	before { @site = user.sites.build(site_name: "Test Site", company: "Acme Inc.", industry_type: "Commercial",
@@ -9,7 +10,7 @@ describe Site do
 								zip_code: "60607", square_feet: "3000", phases: "3-phase",
 								is_site_saved: "0") }
 
-	#let(:site) { FactoryGirl.create(:site, user: :user) }
+	#let!(:site) { FactoryGirl.create(:site, user: @user) }
 
 	subject { @site }
 
