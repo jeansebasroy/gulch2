@@ -45,7 +45,7 @@ describe "User Pages" do
 
       before { click_button sign_in }
 
-      it { should have_title('Input') }
+      it { should have_title('User Profile') }
       it { should_not have_link('Sign In') }
       it { should have_link('Sign Out') }
               
@@ -60,119 +60,6 @@ describe "User Pages" do
      
   end
 
-  describe "Profile page" do
-    let(:user) { FactoryGirl.create(:user) }
-    let!(:site1) { FactoryGirl.create(:site, user: user) }
-    let!(:site2) { FactoryGirl.create(:site, user: user) }
-
-# => user sign in
-    before { visit signin_path }
-    before do
-      fill_in "Email",        with: user.email
-      fill_in "Password",     with: user.password
-    end
-    let(:sign_in) { "Sign in" }  
-    before { click_button sign_in }
-
-
-    before { visit user_path(user) }
-
-    # User Profile section
-    it { should have_title('Profile') }
-    it { should have_content(user.first_name) }
-    it { should have_content(user.last_name) }
-    it { should have_content(user.email) }
-    it { should have_content(user.phone) }
-    it { should have_content(user.company) }
-    it { should have_content(user.address) }
-    it { should have_content(user.city) }
-    it { should have_content(user.state) }
-    it { should have_content(user.zip) }
-        
-    # List of sites
-    describe "site list" do
-      it { should have_content(site1.site_name) }
-      it { should have_content(site1.company) }
-      it { should have_content(site1.city) }
-      it { should have_content(site1.state) }
-
-      it { should have_content(site2.site_name) }
-      it { should have_content(site2.company) }
-      it { should have_content(site2.city) }
-      it { should have_content(site2.state) }
-
-    end
-
-    describe "New Site Page" do
-      before { click_link "New" }
-
-      it { should have_title('Create A New Site') }
-      it { should have_content('Create A New Site') }
-      it { should have_content('Site name') }
-      it { should have_content('Company') }
-      it { should have_content('Industry type') }
-      it { should have_content('Building type') }
-      it { should have_content('Address') }
-      it { should have_content('City') }
-      it { should have_content('State') }
-      it { should have_content('Zip code') }
-      it { should have_content('Description') }
-      it { should have_content('Phases') }
-      it { should have_content('Square feet') }
-
-
-      let(:submit) { "Create New Site" }
-
-      describe "with invalid information" do
-        it "should not create a site" do
-          expect { click_button submit }.not_to change(Site, :count)
-        end
-
-        describe "after submission" do
-          before { click_button submit }
-
-          it { should have_title('Create A New Site') }
-          it { should have_content('Create A New Site') }
-          it { should have_selector('div.alert.alert-error') }
-        end
-
-      end
-
-      describe "with valid information" do
-        #let(:user) { FactoryGirl.create(:user) }
-        before do
-          fill_in "Site name",    with: "Test"
-          fill_in "Company",      with: "Acme"
-          select "Commercial",    from: "Industry type"
-          select "Education",     from: "Building type"
-          fill_in "Address",      with: "123 Main St"
-          fill_in "City",         with: "Any Town"
-          fill_in "State",        with: "IL"
-          fill_in "Zip",          with: "60607"
-          fill_in "Description",  with: "Testing"
-          select  "3-phase",      from: "Phases"
-          fill_in "Square feet",  with: "2000"
-        end
-        
-        it "should create a site" do
-          expect { click_button submit }.to change(Site, :count).by(1)
-        end
-
-        describe "after saving the site" do
-          before { click_button submit }
-        
-#          it { should have_title('Input') }
-#          it { should have_link('Sign Out') }
-#          it { should_not have_link('Sign In') }
-#          it { should have_selector('div.alert.alert-notice', text: 'Welcome to Gulch Solutions') }
-        
-        end
-
-      end
-   
-    end
-
-  end
 
   describe "Sign up page" do
     before { visit signup_path }
@@ -239,7 +126,7 @@ describe "User Pages" do
       describe "after saving the user" do
         before { click_button submit }
       
-        it { should have_title('Input') }
+        it { should have_title('User Profile') }
         it { should have_link('Sign Out') }
         it { should_not have_link('Sign In') }
         it { should have_selector('div.alert.alert-notice', text: 'Welcome to Gulch Solutions') }
@@ -258,6 +145,41 @@ describe "User Pages" do
       end
     end
   end
+
+
+  describe "Profile page" do
+    let(:user) { FactoryGirl.create(:user) }
+
+# => user sign in
+    before { visit signin_path }
+    before do
+      fill_in "Email",        with: user.email
+      fill_in "Password",     with: user.password
+    end
+    let(:sign_in) { "Sign in" }  
+    before { click_button sign_in }
+
+
+    before { visit user_path(user) }
+
+    # User Profile
+    it { should have_title('Profile') }
+    it { should have_content(user.first_name) }
+    it { should have_content(user.last_name) }
+    it { should have_content(user.email) }
+    it { should have_content(user.phone) }
+    it { should have_content(user.company) }
+    it { should have_content(user.address) }
+    it { should have_content(user.city) }
+    it { should have_content(user.state) }
+    it { should have_content(user.zip) }
+
+    it { should have_link('Edit Profile') }
+
+    describe "Edit user profile page" do
+# => need to insert tests & capabilities      
+    end
+  end   
 
 #  describe "edit" do
 #    let(:user) { FactoryGirl.create(:user) }

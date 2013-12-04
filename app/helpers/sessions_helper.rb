@@ -35,4 +35,8 @@ module SessionsHelper
         cookies.delete(:remember_token)
     end
 
+    def current_site=(site)
+        @current_site = site 
+    end
+
 end

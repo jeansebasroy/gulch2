@@ -1,0 +1,124 @@
+
+<title>Site Details and Load Profile</title>
+<h1>Site Details:</h1>
+
+<p id="notice"><%= notice %></p>
+
+<table> 
+      <tr>
+            <td> Site Name: </td>
+            <td><%= @site.site_name %></td>
+
+            <td></td>
+            <td></td>
+
+            <td> Address: </td>
+            <td><%= @site.address %></td>
+      </tr>
+      <tr>
+            <td> Company: </td>
+            <td><%= @site.company %></td>
+
+            <td></td>
+            <td></td>
+
+            <td> City: </td>
+            <td><%= @site.city %></td>
+      </tr>
+      <tr>
+            <td> Industry Type: </td>
+            <td><%= @site.industry_type %></td>
+
+            <td></td>
+            <td></td>
+
+            <td> State: </td>
+            <td><%= @site.state %></td>
+      </tr>
+      <tr>
+            <td> Building Type: </td>
+            <td><%= @site.building_type %></td>
+
+            <td></td>
+            <td></td>
+
+            <td> Zip: </td>
+            <td><%= @site.zip_code %></td>
+      </tr>
+      <tr>
+            <td> Phases: </td>
+            <td><%= @site.phases %></td>
+
+            <td></td>
+            <td></td>
+
+            <td> Square Feet: </td>
+            <td><%= @site.square_feet %></td>
+      </tr>
+      <tr>
+            <td> Description: </td>
+            <td><%= @site.description %></td>
+      </tr>
+</table>
+
+<%= link_to "Edit Site Info", edit_site_path(@site) %>      
+
+<h1>Site Load Profile: </h1>
+<% if @site.site_load_profiles.any? %>
+      <table>
+            <tr>
+                  <td>Meter Read Date:</td>
+                  <td>Total Usage (kWh):</td>
+                  <td>On-Peak Usage (kWh):</td>
+                  <td>Part-Peak Usage (kWh):</td>
+                  <td>Off-Peak Usage (kWh):</td>
+                  <td>Billing Demand (kW):</td>
+                  <td>On-Peak Demand (kW):</td>
+                  <td>Part-Peak Demand (kW):</td>
+                  <td>Off-Peak Demand (kW):</td>
+            </tr>
+            <ol class="sites">
+                  <%= render @site_load_profiles %>
+            </ol>
+            <%#= will_paginate @sites %>
+      </table>
+<% else %>
+<p> No load profile saved </p>
+<% end %>
+
+
+<h1>Add to Site Load Profile:</h1>
+<div class="row">
+  <div class="span6 offset3">
+    <%= form_for(@site_load_profile) do |f| %>
+      <%= render 'shared/error_messages', object: f.object %>
+            
+            <div>
+                  <%= f.hidden_field :site_id, value: @site.id %>
+            </div>
+
+            <div class="left">
+                  <%= f.label :meter_read_date %>
+                  <%= f.date_field :meter_read_date %>
+            </div>
+
+            <div class="right">
+                  <%= f.label :tou, "Time of Use" %>
+                  <%= f.select :tou, ['All', 'Peak', 'Part-Peak', 'Off-Peak'] %>
+            </div>
+
+            <div class="left">
+                  <%= f.label :demand, "Demand (in kW)" %>
+                  <%= f.text_field :demand %>
+            </div>
+
+            <div class="right">
+                  <%= f.label :usage, "Usage (in kWh)" %>
+                  <%= f.text_field :usage %>
+            </div>
+                  
+      <%= f.submit "Add to Load Profile", class: "btn btn-med btn-custom" %>
+    <% end %>
+
+  </div>
+</div>

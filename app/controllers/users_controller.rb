@@ -17,7 +17,7 @@ class UsersController < ApplicationController
  			sign_in @user
       UserMailer.new_user_info(@user).deliver
       flash[:notice] = 'Welcome to Gulch Solutions!'
-      redirect_to '/input'
+      redirect_to user_path(@user)
  		else	
       render 'new'
  		end

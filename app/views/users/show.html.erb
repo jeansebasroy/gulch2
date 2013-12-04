@@ -1,4 +1,4 @@
-<title>Profile</title>
+<title>User Profile</title>
 <h1>View your profile</h1>
 
 <p id="notice"><%= notice %></p>
@@ -7,65 +7,57 @@
       <tr>
             <td> First Name: </td>
             <td><%= @user.first_name %></td>
+
+            <td></td>
+
+            <td> Company: </td>
+            <td><%= @user.company %></td>
+
       </tr>
       <tr>
             <td> Last Name: </td>
             <td><%= @user.last_name %></td>
+
+            <td></td>
+            
+            <td> Address: </td>
+            <td><%= @user.address %></td>
+            
       </tr>
       <tr>
             <td> Email: </td>
             <td><%= @user.email %></td>
-      </tr>
-      <tr>
-            <td> Phone </td>
-            <td><%= @user.phone %></td>
-      </tr>
-      <tr>
-            <td> Company: </td>
-            <td><%= @user.company %></td>
-      </tr>
-      <tr>
-            <td> Address: </td>
-            <td><%= @user.address %></td>
-      </tr>
-      <tr>
+
+            <td></td>
+
             <td> City: </td>
             <td><%= @user.city %></td>
       </tr>
       <tr>
+            <td> Phone </td>
+            <td><%= @user.phone %></td>
+
+            <td></td>
+
             <td> State: </td>
             <td><%= @user.state %></td>
       </tr>
       <tr>
+            <td></td>
+            <td></td>
+
+            <td></td>
+
             <td> Zip: </td>
             <td><%= @user.zip %></td>
       </tr>
+      
 </table>
 
-<%= link_to "Edit Profile Info", edit_user_path(@user) %>	
+<%= link_to "Edit Profile Info", edit_user_path(@user) %>   
 
-<h1>Sites: </h1>
-<% if @user.sites.any? %>
-      <table>
-            <tr>
-                  <td>Site Name:</td>
-                  <td>Company:</td>
-                  <td>City:</td>
-                  <td>State:</td>
-            </tr>
-            <ol class="sites">
-                  <%= render @sites %>
-            </ol>
-            <%#= will_paginate @sites %>
-      </table>
-<% else %>
-<p> No sites saved </p>
-<% end %>
-
-<%= link_to "Create New Site", new_site_path %>
 
 <br> <!-- enters a blank line, ie: line break -->
 <br> <!-- enters a blank line, ie: line break -->
 <br> <!-- enters a blank line, ie: line break -->
 <br> <!-- enters a blank line, ie: line break -->
-

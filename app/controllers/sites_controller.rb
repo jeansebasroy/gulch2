@@ -7,16 +7,33 @@ class SitesController < ApplicationController
 
 	def create
 		@site = Site.new(site_params)
-		#@site.user_id = @user.id
 
 		if @site.save
-			redirect_to current_user
+			flash[:notice] = 'New Site has been created.'
+			redirect_to site_load_profile_path(@site)
 		else
 			render 'new'
 		end
 	end
 
+	def show
+		#@site = Site.find(params[:id])
+		#@user = User.find(params[:id])
+	end
+
 	def edit
+		@site = Site.find(params[:id])
+	end
+
+	def update
+		@site = Site.find(params[:id])
+
+		if @site.update_attributes(site_params)
+			flash[:notice] = 'Site info has been updated.'
+			redirect_to site_load_profile_path(@site)
+		else
+			render 'edit'
+		end
 	end
 
 	def destroy

@@ -13,6 +13,9 @@ describe "Tariff Tool pages" do
        	fill_in "Password",     with: user.password
        	click_button "Sign in"
     end
+
+    before { visit '/input' }
+    # => need to fix this hack; point to an actual route
 	
 	describe "Input page" do
 

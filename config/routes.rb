@@ -2,6 +2,7 @@ Gulch2::Application.routes.draw do
   resources :password_resets
   resources :sessions,      only: [:new, :create, :destroy]
   resources :sites
+  resources :site_load_profiles
   resources :tarifftools
   resources :users
   
