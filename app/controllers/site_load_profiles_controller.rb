@@ -6,15 +6,19 @@ class SiteLoadProfilesController < ApplicationController
 	end
 
 	def create
-		#@site = Site.find(params[:id])
+		@site = Site.find(params[:site_load_profile][:site_id])
 		@site_load_profile = SiteLoadProfile.new(site_load_profile_params)
 
 		if @site_load_profile.save
 			flash[:notice] = 'New Load Profile data added.'
-			redirect_to site_path(@site)
+			redirect_to site_load_profile_path(@site)
+			#redirect_to '/input'
 		else
 			render 'show'
 		end
+
+		#redirect_to '/input'
+
 	end
 
 	def show
