@@ -1,10 +1,11 @@
 
 <title>Site Details and Load Profile</title>
-<h1>Site Details:</h1>
 
 <p id="notice"><%= notice %></p>
 
-<table> 
+<h1>Site Details:</h1>
+
+<table>
       <tr>
             <td> Site Name: </td>
             <td><%= @site.site_name %></td>
@@ -68,46 +69,31 @@
 
 
 <% if @site.site_load_profiles.any? %>
-      <% @full_load_profile = SiteLoadProfile.get_load_profile(@site.id) %>
       <table>
             <tr>
                   <td>Meter Read Date:</td>
-                  <td>Total Usage (kWh):</td>
+                  <!-- <td>Data Source:</td> -->
+                  <td>All Usage (kWh):</td>
                   <td>On-Peak Usage (kWh):</td>
                   <td>Part-Peak Usage (kWh):</td>
                   <td>Off-Peak Usage (kWh):</td>
-                  <td>Billing Demand (kW):</td>
+                  <td>All Demand (kW):</td>
                   <td>On-Peak Demand (kW):</td>
                   <td>Part-Peak Demand (kW):</td>
                   <td>Off-Peak Demand (kW):</td>
             </tr>
             
-            <% @full_load_profile.each do |i| %>
-                  <tr>
-                        <td><%= i[:meter_read_date] %></td>
-
-                        <td><%= i[:all_usage] %></td>
-                        <td><%= i[:peak_usage] %></td>
-                        <td><%= i[:part_usage] %></td>
-                        <td><%= i[:off_usage] %></td>
-
-                        <td><%= i[:all_demand] %></td>
-                        <td><%= i[:peak_demand] %></td>
-                        <td><%= i[:part_demand] %></td>
-                        <td><%= i[:off_demand] %></td>
-                        
-                        <td><%#= link_to "Edit",       edit_user_path(@user) %></td>
-                        <td><%#= link_to "Select",     edit_user_path(@user) %></td>
-                        <td><%#= link_to "Delete",     edit_user_path(@user) %></td>
-                  </tr>
-            <% end %>
+            <ol class="sites">
+                  <%= render @site.site_load_profiles %>
+            </ol>
+            
       </table>
 <% else %>
 <p> No load profile saved </p>
 <% end %>
 
 
-<h1>Add to Site Load Profile:</h1>
+<h1>Change Site Load Profile:</h1>
 <div class="row">
   <div class="span6 offset3">
     <%= form_for(@site_load_profile, url: { action: "create" }) do |f| %>
@@ -115,29 +101,55 @@
             
             <div>
                   <%= f.hidden_field :site_id, value: @site.id %>
+                  <%= f.hidden_field :data_source, value: 'Monthly' %>
             </div>
 
-            <div class="left">
+            <div class="center">
                   <%= f.label :meter_read_date %>
                   <%= f.date_field :meter_read_date %>
             </div>
 
+            <div class="left">
+                  <%= f.label :all_usage, "All Usage (in kWh)" %>
+                  <%= f.text_field :all_usage %>
+            </div>
+
             <div class="right">
-                  <%= f.label :tou, "Time of Use" %>
-                  <%= f.select :tou, ['All', 'On-Peak', 'Part-Peak', 'Off-Peak'] %>
+                  <%= f.label :all_demand, "All Demand (in kW)" %>
+                  <%= f.text_field :all_demand %>
             </div>
 
             <div class="left">
-                  <%= f.label :demand, "Demand (in kW)" %>
-                  <%= f.text_field :demand %>
+                  <%= f.label :on_peak_usage, "On-Peak Usage (in kWh)" %>
+                  <%= f.text_field :on_peak_usage %>
             </div>
 
             <div class="right">
-                  <%= f.label :usage, "Usage (in kWh)" %>
-                  <%= f.text_field :usage %>
+                  <%= f.label :on_peak_demand, "On-Peak Demand (in kW)" %>
+                  <%= f.text_field :on_peak_demand %>
+            </div>
+
+            <div class="left">
+                  <%= f.label :part_peak_usage, "Part-Peak Usage (in kWh)" %>
+                  <%= f.text_field :part_peak_usage %>
+            </div>
+
+            <div class="right">
+                  <%= f.label :part_peak_demand, "Part-Peak Demand (in kW)" %>
+                  <%= f.text_field :part_peak_demand %>
+            </div>
+
+            <div class="left">
+                  <%= f.label :off_peak_usage, "Off-Peak Usage (in kWh)" %>
+                  <%= f.text_field :off_peak_usage %>
+            </div>
+
+            <div class="right">
+                  <%= f.label :off_peak_demand, "Off-Peak Demand (in kW)" %>
+                  <%= f.text_field :off_peak_demand %>
             </div>
                   
-      <%= f.submit "Add to Load Profile", class: "btn btn-med btn-custom" %>
+      <%= f.submit "Change Load Profile", class: "btn btn-med btn-custom" %>
     <% end %>
 
   </div>

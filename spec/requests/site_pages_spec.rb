@@ -82,15 +82,15 @@ describe "Site Pages" do
     it { should have_content('Description:') }
 
     it { should have_content('Site Load Profile:')}
-    it { should have_content('Add to Site Load Profile:') }
+    it { should have_content('Change Site Load Profile:') }
 
     describe "without load profile data" do
       it { should_not have_content('Meter Read Date:') }
-      it { should_not have_content('Total Usage (kWh):') }
+      it { should_not have_content('All Usage (kWh):') }
       it { should_not have_content('On-Peak Usage (kWh):') }
       it { should_not have_content('Part-Peak Usage (kWh):') }
       it { should_not have_content('Off-Peak Usage (kWh):') }
-      it { should_not have_content('Billing Demand (kW):') }
+      it { should_not have_content('All Demand (kW):') }
       it { should_not have_content('On-Peak Demand (kW):') }
       it { should_not have_content('Part-Peak Demand (kW):') }
       it { should_not have_content('Meter Read Date:') }
@@ -100,18 +100,18 @@ describe "Site Pages" do
 
     describe "add load profile data" do
 
-      let(:add_data) { "Add to Load Profile" }
+      let(:change_data) { "Change Load Profile" }
 
       describe "with invalid information" do
         it "should not create a load profile record" do
-            expect { click_button add_data }.not_to change(SiteLoadProfile, :count)
+            expect { click_button change_data }.not_to change(SiteLoadProfile, :count)
         end
 
         describe "after invalid submission" do
 
-          before { click_button add_data }
+          before { click_button change_data }
 
-          it { should_not have_content('Total Usage (kWh):') }
+          it { should_not have_content('All Usage (kWh):') }
           it { should have_selector('div.alert.alert-error') }
 
         end
@@ -121,30 +121,86 @@ describe "Site Pages" do
       describe "with valid information" do
         before do
           fill_in "Meter read date",  with: '10/1/2013'
-          select  "All",              from: "Time of Use"
-          fill_in "Demand (in kW)",   with: '100'
-          fill_in "Usage (in kWh)",   with: '10000'
+          fill_in "All Usage (in kWh)",   with: '10000'
+          fill_in "All Demand (in kW)",   with: '100'
         end
 
         it "should create load profile data" do
-          expect { click_button add_data }.to change(SiteLoadProfile, :count).by(1)
+          expect { click_button change_data }.to change(SiteLoadProfile, :count).by(1)
         end
 
-      end
+        describe "after valid submission" do
+          before { click_button change_data }
 
-      describe "after valid submission" do
+          it { should have_selector('div.alert.alert-notice', text: 'New Load Profile data added.') }
 
-# => use test once site load profile data is included
-        #it { should have_content('Meter Read Date:') }
-        #it { should have_content('Total Usage (kWh):') }
-        #it { should have_content('On-Peak Usage (kWh):') }
-        #it { should have_content('Part-Peak Usage (kWh):') }
-        #it { should have_content('Off-Peak Usage (kWh):') }
-        #it { should have_content('Billing Demand (kW):') }
-        #it { should have_content('On-Peak Demand (kW):') }
-        #it { should have_content('Part-Peak Demand (kW):') }
-        #it { should have_content('Meter Read Date:') }
-        #it { should have_content('Off-Peak Demand (kW):') }
+          it { should have_content('Meter Read Date:') }
+          it { should have_content('All Usage (kWh):') }
+          it { should have_content('On-Peak Usage (kWh):') }
+          it { should have_content('Part-Peak Usage (kWh):') }
+          it { should have_content('Off-Peak Usage (kWh):') }
+          it { should have_content('All Demand (kW):') }
+          it { should have_content('On-Peak Demand (kW):') }
+          it { should have_content('Part-Peak Demand (kW):') }
+          it { should have_content('Meter Read Date:') }
+          it { should have_content('Off-Peak Demand (kW):') }
+
+          it { should have_content('10000') }
+
+          it { should have_button('Delete') }
+
+        
+          describe "update load profile data" do
+
+            before do 
+              fill_in "Meter read date",  with: '10/1/2013'
+              fill_in "All Demand (in kW)",   with: '100'
+              fill_in "All Usage (in kWh)",   with: '20000'
+            end
+
+            it "should not create a new load profile data" do
+              expect { click_button change_data }.to change(SiteLoadProfile, :count).by(0)
+            end
+
+            before { click_button change_data }
+
+            it { should have_content('20000') }
+            it { should_not have_content('10000') }
+            it { should have_selector('div.alert.alert-notice', text: 'Load Profile data updated.') }
+            
+          end
+          
+          describe "delete load profile data" do
+          
+            it "should remove site_load_profile data" do
+              expect do
+                click_button('Delete', match: :first)
+              end.to change(SiteLoadProfile, :count).by(-1)
+              #expect { click_link 'Delete' }.to change(SiteLoadProfile, :count).by(-1)
+            end
+
+            describe "should not show any load profile data" do
+              before { click_button "Delete" }
+
+              # => how to make sure I "click" the verification notice?
+              it { should_not have_content('Meter Read Date:') }
+              it { should_not have_content('Total Usage (kWh):') }
+              it { should_not have_content('On-Peak Usage (kWh):') }
+              it { should_not have_content('Part-Peak Usage (kWh):') }
+              it { should_not have_content('Off-Peak Usage (kWh):') }
+              it { should_not have_content('Billing Demand (kW):') }
+              it { should_not have_content('On-Peak Demand (kW):') }
+              it { should_not have_content('Part-Peak Demand (kW):') }
+              it { should_not have_content('Meter Read Date:') }
+              it { should_not have_content('Off-Peak Demand (kW):') }
+
+              it { should have_selector('div.alert.alert-notice', text: 'Site Load Profile data deleted.') }
+
+            end
+
+          end
+
+        end
 
       end
 
@@ -226,7 +282,7 @@ describe "Site Pages" do
         it { should have_content('Description:') }
         it { should have_link('Edit Site Info') }
         
-        it { should have_content('Add to Site Load Profile:') }
+        it { should have_content('Change Site Load Profile:') }
 
 
         describe "edit site info" do

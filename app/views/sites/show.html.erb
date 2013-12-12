@@ -1,6 +1,6 @@
 
 <h1>Sites: </h1>
-<% if current_user.sites.any? %>
+<% if current_user.sites.count(:is_site_saved) > 0 %>
       <table>
             <tr>
                   <td>Site Name:</td>

@@ -9,15 +9,34 @@ class SiteLoadProfilesController < ApplicationController
 		@site = Site.find(params[:site_load_profile][:site_id])
 		@site_load_profile = SiteLoadProfile.new(site_load_profile_params)
 
-		if @site_load_profile.save
-			flash[:notice] = 'New Load Profile data added.'
-			redirect_to site_load_profile_path(@site)
-			#redirect_to '/input'
-		else
-			render 'show'
-		end
+		# checks to see if a site_load_profile already matches on meter_read_date 
+		@new_or_update = SiteLoadProfile.new_or_update(@site_load_profile.site_id, 
+			@site_load_profile.meter_read_date)
 
-		#redirect_to '/input'
+		if @new_or_update[:status] == 'new'
+
+			if @site_load_profile.save
+				flash[:notice] = 'New Load Profile data added.'
+				redirect_to site_load_profile_path(@site)
+			else
+				render 'show'
+			end
+
+		elsif @new_or_update[:status] == 'update'
+			@site_load_profile = SiteLoadProfile.find(@new_or_update[:id])
+
+  			if @site_load_profile.update(site_load_profile_params)
+				flash[:notice] = 'Load Profile data updated.'
+				redirect_to site_load_profile_path(@site)
+			else
+				render 'show'
+			end
+
+		elsif @new_or_update[:status] == 'error'
+			flash[:notice] = 'An error has occured.  Our support team has 
+				been made aware and will be fixing the problem shortly.'
+			redirect_to site_load_profile_path(@site)
+		end
 
 	end
 
@@ -29,21 +48,31 @@ class SiteLoadProfilesController < ApplicationController
 	def edit
 	end
 
-	def destroy
+	def delete
+		@site = Site.find(params[:site_id])
+		@site_load_profile = SiteLoadProfile.find(params[:id])
+
+		if @site_load_profile.destroy
+			flash[:notice] = 'Site Load Profile data deleted.'
+			redirect_to site_load_profile_path(@site)
+		else
+			flash[:notice] = 'An error has occured in an attempt to delete the Site Load Profile data.
+							Support has been made aware and shall be in touch to address this issue.'
+			# add email alert to support
+			
+		end
+
 	end
 
 
 	private
 
 		def site_load_profile_params
-			params.require(:site_load_profile).permit(:meter_read_date, :tou, 
-						:demand, :usage, :interval_date_time, :site_id)
+			params.require(:site_load_profile).permit(:meter_read_date, :data_source,
+						:all_usage, :on_peak_usage, :part_peak_usage, :off_peak_usage,
+						:all_demand, :on_peak_demand, :part_peak_demand, :off_peak_demand,  
+						:site_id)
 		end
 
 end
-
-#	def show
-#		@site = Site.find(params[:id])
-		#@user = User.find(params[:id])
-#	end
 

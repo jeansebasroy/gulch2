@@ -26,15 +26,16 @@ FactoryGirl.define do
 		zip_code 				"00000"
 		square_feet 			"3000"
 		phases 					"3-phase"
-		is_site_saved 			""
+		is_site_saved 			"true"
 		user
 	end
 
 	factory :site_load_profile do
 		meter_read_date	"10/1/2013"
-		tou				"All"
-		demand			"100"
-		usage			"10000"
+		data_source		"Monthly"
+		#tou				"All"
+		all_demand			"100"
+		all_usage			"10000"
 		site
 	end
 

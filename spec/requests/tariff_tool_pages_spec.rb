@@ -60,9 +60,9 @@ describe "Tariff Tool pages" do
 		it { should have_title('Input') }
 		it { should have_content('Zip code') }
 		it { should have_content('Phases') }
-		it { should have_content('Demand (in kW)') }
-		it { should have_content('Usage (in kWh)') }
-		it { should have_content('Bill Date (yyyy-mm-dd)') }
+		it { should have_content('All Demand (in kW)') }
+		it { should have_content('All Usage (in kWh)') }
+		it { should have_content('Meter Read Date (yyyy-mm-dd)') }
 		
 		it { should_not have_content('View Demo') }
 		it { should_not have_content('Contact') }
@@ -78,11 +78,11 @@ describe "Tariff Tool pages" do
 			describe "with zip code not in the database" do
 
 				before do
-					fill_in "Zip code",					with: "00001"
-	       			select  "3-phase", 					from: "Phases"
-    	   			fill_in "Demand (in kW)",			with: "100"
-       				fill_in "Usage (in kWh)",			with: "10000"
-       				fill_in "Bill Date (yyyy-mm-dd)",   with: "2013-10-01"
+					fill_in "Zip code",							with: "00001"
+	       			select  "3-phase", 							from: "Phases"
+    	   			fill_in "All Demand (in kW)",				with: "100"
+       				fill_in "All Usage (in kWh)",				with: "10000"
+       				fill_in "Meter Read Date (yyyy-mm-dd)",   	with: "2013-10-01"
        				click_button "Submit"
 				end
 
@@ -111,11 +111,11 @@ describe "Tariff Tool pages" do
 			describe "with other invalid data" do
 
 				before do
-					fill_in "Zip code",					with: "00000"
-	       			select  "3-phase", 					from: "Phases"
-    	   			fill_in "Demand (in kW)",			with: "-1"
-       				fill_in "Usage (in kWh)",			with: "10000"
-       				fill_in "Bill Date (yyyy-mm-dd)",   with: "2013-10-01"
+					fill_in "Zip code",							with: "00000"
+	       			select  "3-phase", 							from: "Phases"
+    	   			fill_in "All Usage (in kWh)",				with: "10000"
+    	   			fill_in "All Demand (in kW)",				with: "-1"
+       				fill_in "Meter Read Date (yyyy-mm-dd)",   	with: "2013-10-01"
        				click_button "Submit"
 				end
 
@@ -136,11 +136,11 @@ describe "Tariff Tool pages" do
 		describe "after valid Input submission" do
 
 			before do
-       			fill_in "Zip code",      			with: "00000"
-       			select  "3-phase", 					from: "Phases"
-       			fill_in "Demand (in kW)",			with: "100"
-       			fill_in "Usage (in kWh)",			with: "10000"
-       			fill_in "Bill Date (yyyy-mm-dd)",  	with: "2013-10-01"
+       			fill_in "Zip code",      					with: "00000"
+       			select  "3-phase", 							from: "Phases"
+       			fill_in "All Usage (in kWh)",				with: "10000"
+       			fill_in "All Demand (in kW)",				with: "100"
+       			fill_in "Meter Read Date (yyyy-mm-dd)",  	with: "2013-10-01"
        			click_button "Submit"      			
     		end
 

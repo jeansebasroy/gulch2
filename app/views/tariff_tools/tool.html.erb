@@ -5,8 +5,8 @@
 <p id="notice"><%= notice %></p>
 
 <% @zip = Site.last.zip_code %>
-<% @demand = SiteLoadProfile.last.demand %>
-<% @usage = SiteLoadProfile.last.usage %>
+<% @demand = SiteLoadProfile.last.all_demand %>
+<% @usage = SiteLoadProfile.last.all_usage %>
 <% @date = SiteLoadProfile.last.meter_read_date %>
 <% @phases = Site.last.phases %>
 

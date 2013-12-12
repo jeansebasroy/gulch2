@@ -9,15 +9,17 @@ class TariffToolsController < ApplicationController
 						user_id: "1")
 
 		if @site.save 
-			@site_load_profile = SiteLoadProfile.new(meter_read_date: params[:site_load_profile][:bill_date],
-						tou: "All",	demand: params[:site_load_profile][:demand_in_kW], 
-						usage: params[:site_load_profile][:usage_in_kWh], site_id: @site.id)
+			@site_load_profile = SiteLoadProfile.new(meter_read_date: params[:site_load_profile][:meter_read_date],
+						data_source: params[:site_load_profile][:data_source], 
+						all_usage: params[:site_load_profile][:all_usage], 
+						all_demand: params[:site_load_profile][:all_demand], 
+						site_id: @site.id)
 	
 			if @site_load_profile.save
 			    
 				@zip = Site.last.zip_code
-				@demand = SiteLoadProfile.last.demand
-				@usage = SiteLoadProfile.last.usage
+				@demand = SiteLoadProfile.last.all_demand
+				@usage = SiteLoadProfile.last.all_usage
 				@date = SiteLoadProfile.last.meter_read_date
 				@phases = Site.last.phases
 

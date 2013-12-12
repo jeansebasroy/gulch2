@@ -17,8 +17,9 @@ Gulch2::Application.routes.draw do
 
   match '/input/save',  to: 'tariff_tools#create', via: 'post'
       #fix this hack
-
-
+  post "/site_load_profiles/:id" => "site_load_profiles#delete"
+      #fix this hack
+  
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

@@ -1,12 +1,15 @@
-<tr>
-  	<td><%= site.site_name %></td>
-  	<td><%= site.company %></td>
-  	<td><%= site.city %></td>
-  	<td><%= site.state %></td>
-  	<td><%= site.description %></td>
-  	<td><%= link_to "View", site_load_profile_path(site) %></td>
-  	<td><%= link_to "Edit", edit_user_path(@user) %></td>
-	<td><%= link_to "Select", edit_user_path(@user) %></td>
-	<td><%= link_to "Delete", edit_user_path(@user) %></td>
-  
-</tr>
+<% if site.is_site_saved == true %>
+
+	<tr>
+	  	<td><%= site.site_name %></td>
+	  	<td><%= site.company %></td>
+	  	<td><%= site.city %></td>
+	  	<td><%= site.state %></td>
+	  	<td><%= site.description %></td>
+	  	<td><%= link_to "View", site_load_profile_path(site) %></td>
+	  	<td><%= link_to "Edit", edit_user_path(@user) %></td>
+		<td><%= link_to "Select", edit_user_path(@user) %></td>
+		<td><%= link_to "Delete", edit_user_path(@user) %></td>
+	</tr>
+
+<% end %>

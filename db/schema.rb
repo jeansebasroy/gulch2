@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131102174449) do
+ActiveRecord::Schema.define(version: 20131211153405) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -25,6 +25,15 @@ ActiveRecord::Schema.define(version: 20131102174449) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "site_id"
+    t.string   "data_source"
+    t.decimal  "all_usage"
+    t.decimal  "on_peak_usage"
+    t.decimal  "part_peak_usage"
+    t.decimal  "off_peak_usage"
+    t.decimal  "all_demand"
+    t.decimal  "on_peak_demand"
+    t.decimal  "part_peak_demand"
+    t.decimal  "off_peak_demand"
   end
 
   create_table "sites", force: true do |t|

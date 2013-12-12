@@ -3,18 +3,24 @@ require 'spec_helper'
 describe SiteLoadProfile do
 	
 	
-	before { @site_load_profile = SiteLoadProfile.new(meter_read_date: "2013-09-23", tou: "All",
-														demand: "100", usage: "10000", 
-														interval_date_time: "2013-09-23 00:00:00.0",
+	before { @site_load_profile = SiteLoadProfile.new(meter_read_date: "2013-09-23", data_source: "Monthly",
+														all_usage: "10000", all_demand: "100", 
+														off_peak_usage: "2000", off_peak_demand: "20", 
 														site_id: "1") }
 
 	subject { @site_load_profile }
 
 	it { should respond_to(:meter_read_date) }
-	it { should respond_to(:tou) }
-	it { should respond_to(:demand) }
-	it { should respond_to(:usage) }
-	it { should respond_to(:interval_date_time) }
+	it { should respond_to(:data_source) }
+	it { should respond_to(:all_usage) }
+	it { should respond_to(:all_demand) }
+	it { should respond_to(:on_peak_usage) }
+	it { should respond_to(:on_peak_demand) }
+	it { should respond_to(:part_peak_usage) }
+	it { should respond_to(:part_peak_demand) }
+	it { should respond_to(:off_peak_usage) }
+	it { should respond_to(:off_peak_demand) }
+	
 	it { should respond_to(:site_id) }
 
 	it { should be_valid }
@@ -30,22 +36,34 @@ describe SiteLoadProfile do
 		it { should_not be_valid }
 	end
 
-# tou
-	describe "when tou is not present" do
-		before { @site_load_profile.tou = " " }
+# data_source
+	describe "when data_source is not present" do
+		before { @site_load_profile.data_source = " " }
 		it { should_not be_valid }
 	end
 
-# demand
-	describe "when demand is not present" do
-		before { @site_load_profile.demand = " " }
+# all_usage
+	describe "when all_usage is not present" do
+		before { @site_load_profile.all_usage = " " }
 		it { should_not be_valid }
 	end
 
-# usage
-	describe "when usage is not present" do
-		before { @site_load_profile.usage = " " }
+# all_demand
+	describe "when all_demand is not present" do
+		before { @site_load_profile.all_demand = " " }
 		it { should_not be_valid }
+	end
+
+# off_peak_usage
+	describe "when off_peak_usage is not present" do
+		before { @site_load_profile.off_peak_usage = " " }
+		it { should be_valid }
+	end
+
+# off_peak_demand
+	describe "when off_peak_demand is not present" do
+		before { @site_load_profile.off_peak_demand = " " }
+		it { should be_valid }
 	end
 
 # site_id
