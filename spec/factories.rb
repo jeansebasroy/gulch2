@@ -9,7 +9,7 @@ FactoryGirl.define do
 		address     			"123 Main Street"
 		city        			"Any Town"
 		state					"IL"
-		zip						"60607"
+		zip						"00000"
 		password				"foobar"
 		password_confirmation	{ |u| u.password }
 	end
@@ -31,8 +31,8 @@ FactoryGirl.define do
 	end
 
 	factory :site_load_profile do
-		meter_read_date	"10/1/2013"
-		data_source		"Monthly"
+		meter_read_date		"2013-10-01"
+		data_source			"Monthly"
 		#tou				"All"
 		all_demand			"100"
 		all_usage			"10000"

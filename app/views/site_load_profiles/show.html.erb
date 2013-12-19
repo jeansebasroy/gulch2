@@ -60,6 +60,22 @@
             <td> Description: </td>
             <td><%= @site.description %></td>
       </tr>
+
+      <tr>
+            <td> Is Site currently selected? </td>
+            <td>
+                  <% if @site.id == session[:selected_site_id] %>
+                        <td>Yes</td>
+                  <% else %>
+                        <td></td>
+                  <% end %>
+            </td>
+
+            <td>
+                  <%#= button_to "Select", action: "select_site", site_id: @site.id %>
+            </td>
+
+      </tr>
 </table>
 
 <%= link_to "Edit Site Info", edit_site_path(@site) %>      

@@ -7,6 +7,27 @@ describe "Site Pages" do
   subject { page }
 
   let(:user) { FactoryGirl.create(:user) }
+
+  # sets up tariff_tool data in the database so tariff_tool will work properly
+  let(:utility)         { FactoryGirl.create(:tariff_utility) }
+  let(:territory)       { FactoryGirl.create(:tariff_territory, tariff_utility: utility) }
+  let(:zip_code)        { FactoryGirl.create(:tariff_zip_code) }
+  #let(:territory_zip)  { FactoryGirl.create(:tariff_territory_zip_code_rel, 
+  #               tariff_territory: territory, tariff_zip_code: zip_code) }
+  let(:season_all)      { FactoryGirl.create(:tariff_season_all, tariff_territory: territory) }
+  let(:season_winter)     { FactoryGirl.create(:tariff_season_winter, tariff_territory: territory) }
+  #let(:meter_read_october) { FactoryGirl.create(:tariff_meter_read_october, 
+  #               tariff_territory: territory) }
+  #let(:meter_read_november)  { FactoryGirl.create(:tariff_meter_read_november,
+  #               tariff_territory: territory)}
+  let(:billing_class)     { FactoryGirl.create(:tariff_billing_class, tariff_territory: territory) }
+  let(:tariff_energy)     { FactoryGirl.create(:tariff_tariff_energy, tariff_billing_class: billing_class) }
+  let(:tariff_delivery)   { FactoryGirl.create(:tariff_tariff_delivery, tariff_billing_class: billing_class) }
+  let(:bill_group_energy)   { FactoryGirl.create(:tariff_bill_group_energy, tariff_billing_class: billing_class) }
+  let(:bill_group_delivery)   { FactoryGirl.create(:tariff_bill_group_delivery, tariff_billing_class: billing_class) }
+
+  #let(:line_items_fixed)   { FactoryGirl.create(:tariff_line_item_fixed, tariff_tariff: tariff_delivery, 
+  #               tariff_season: season_all, tariff_bill_group: bill_group_delivery) }  
   
 # => user sign in
   before { visit signin_path }
@@ -39,6 +60,7 @@ describe "Site Pages" do
   end
 
   let!(:site1) { FactoryGirl.create(:site, user: user) }
+  #let!(:site1) { FactoryGirl.create(:site, user: user, zip_code: "60607") }
   #let!(:site2) { FactoryGirl.create(:site, user: user) }
 
   before { visit site_path(user) }
@@ -50,23 +72,61 @@ describe "Site Pages" do
     it { should have_content(site1.state) }
     it { should have_content(site1.description) }
 
+# => figure out how to click on the second link
     #it { should have_content(site2.site_name) }
     #it { should have_content(site2.company) }
     #it { should have_content(site2.city) }
     #it { should have_content(site2.state) }
     #it { should have_content(site1.description) }
 
+    it { should_not have_content( 'Yes' ) }
+    
+    # => figure out how to make this work
+    #it "should not have session[:selected_site_id]" do
+    #  expect{ session[:selected_site_id] }.to be_nil
+    #end
+
     it { should have_link("View") }
-    it { should have_link("Edit") }
-    it { should have_link("Select") }
-    it { should have_link("Delete") }
+    #it { should have_link("Edit") }
+    it { should have_button("Select") }
+    #it { should have_link("Delete") }
 
     it { should have_link('Create New Site') }
 
-  end
+    describe "select a site" do
+      before { click_button 'Select'}
 
+      it { should have_content(site1.site_name) }
+      it { should have_content('Yes') }
+      
+      it "should change session[:selected_site_id]" do
+        expect{ session[:selected_site_id] }.not_to be_nil
+      end
+
+      describe "attempt to view Bill Comparison tool without site_load_profile data" do
+
+        before { click_link 'Bill Comparison' }
+
+        it { should_not have_title('Bill Comparison') }
+        it { should have_title('Site Details and Load Profile') }
+        it { should have_selector('div.alert.alert-notice', text: 'No Load Profile data exists for currently selected Site.') }
+
+      end
+    
+    end
+
+  end
+  
   describe "view site info" do
     before { visit site_path(user) }
+
+    # => selects a site
+    before { click_button 'Select'}
+
+    it { should have_content(site1.site_name) }
+    it { should have_content('Yes') }
+    
+
     before { click_link 'View' }
 
     it { should have_title('Site Details and Load Profile') }
@@ -120,7 +180,7 @@ describe "Site Pages" do
 
       describe "with valid information" do
         before do
-          fill_in "Meter read date",  with: '10/1/2013'
+          fill_in "Meter read date",      with: '2013-10-01'
           fill_in "All Usage (in kWh)",   with: '10000'
           fill_in "All Demand (in kW)",   with: '100'
         end
@@ -153,7 +213,7 @@ describe "Site Pages" do
           describe "update load profile data" do
 
             before do 
-              fill_in "Meter read date",  with: '10/1/2013'
+              fill_in "Meter read date",      with: '2013-10-01'
               fill_in "All Demand (in kW)",   with: '100'
               fill_in "All Usage (in kWh)",   with: '20000'
             end
@@ -167,11 +227,46 @@ describe "Site Pages" do
             it { should have_content('20000') }
             it { should_not have_content('10000') }
             it { should have_selector('div.alert.alert-notice', text: 'Load Profile data updated.') }
-            
+                  
+            describe "view selected site in Bill Comparison tool" do
+
+              before do
+                @test_territory_zip = TariffTerritoryZipCodeRel.create(tariff_territory_id: territory.id,
+                    tariff_zip_code_id: zip_code.id)
+                @test_meter_read1 = TariffMeterRead.create(meter_read_date: "2013-09-27", billing_month: "October", 
+                    billing_year: "2013" , tariff_territory_id: territory.id)
+                @test_meter_read2 = TariffMeterRead.create(meter_read_date: "2013-10-29", billing_month: "November", 
+                    billing_year: "2013" , tariff_territory_id: territory.id)
+                @test_line_item1 = TariffLineItems.create(line_item_name: "BGS-FP (Winter)", line_item_type: "$/kWh", 
+                    effective_date: "2013-05-29", expiration_date: "", line_item_rate: "0.095672", tou_type: "All",
+                    bill_group_order: "1", tariff_tariff_id: tariff_energy.id, tariff_season_id: season_winter.id, 
+                    tariff_bill_group_id: bill_group_energy.id)
+                @test_line_item2 = TariffLineItems.create(line_item_name: "Customer Charge", line_item_type: "$/month", 
+                    effective_date: "2006-07-15", expiration_date: "", line_item_rate: "11.65", tou_type: "All",
+                    bill_group_order: "1", tariff_tariff_id: tariff_delivery.id, tariff_season_id: season_all.id, 
+                    tariff_bill_group_id: bill_group_delivery.id)
+              end
+
+              before { click_link 'Bill Comparison' }
+
+              it { should have_title('Bill Comparison') }
+              it { should_not have_title('Site Details and Load Profile') }
+              
+              it { should have_content('Billing Period:') }
+              it { should have_content('kWh used = 20000') }
+              it { should have_content('Billed Load in kW =') }
+              it { should have_content('Rate Class:') }
+              it { should have_content('Total Bill =') }
+
+            end
+
           end
-          
+
           describe "delete load profile data" do
           
+            before { visit site_path(user) }
+            before { click_link 'View' }
+
             it "should remove site_load_profile data" do
               expect do
                 click_button('Delete', match: :first)
@@ -207,7 +302,6 @@ describe "Site Pages" do
     end   
 
   end
-
 
   describe "New Site Page" do
     before { visit site_path(user) }

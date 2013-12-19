@@ -4,11 +4,25 @@
 
 <p id="notice"><%= notice %></p>
 
-<% @zip = Site.last.zip_code %>
-<% @demand = SiteLoadProfile.last.all_demand %>
-<% @usage = SiteLoadProfile.last.all_usage %>
-<% @date = SiteLoadProfile.last.meter_read_date %>
-<% @phases = Site.last.phases %>
+<% @site = Site.find(session[:selected_site_id]) %>
+			<% @zip = @site.zip_code %>
+			<% @phases = @site.phases %>
+
+<% if session[:selected_site_load_profile_id] == nil %>
+<%# => fix
+	# find all the site_load_profiles for the give site, 
+	#    and select the one with the most recent meter_read_date %>
+
+<% else %>
+	<%# finds the site_load_profile based on the selected_site_load_profile_id store in session %>
+	<% @site_load_profile = SiteLoadProfile.find(session[:selected_site_load_profile_id]) %>
+<% end %>
+
+<% @zip = @site.zip_code %>
+<% @demand = @site_load_profile.all_demand %>
+<% @usage = @site_load_profile.all_usage %>
+<% @date = @site_load_profile.meter_read_date %>
+<% @phases = @site.phases %>
 
 <% @territory = TariffTerritory.territory(@zip) %>
 <% @utility = TariffUtility.utility(@zip) %> 
@@ -23,19 +37,49 @@
 <div class="top"> <!-- gets all the data needed to display the bill -->
 	<!-- shows the utility and billing period -->
 	<p>
+		<br>
 		<%= @date %>
 		<%= @utility.utility_name %>
 	</p>
 	<p>
 	
 		<strong> Billing Period: <%= @meter_read["start_date"] %> to <%= @meter_read["end_date"] %> </strong>
+		
+		<%#	=> allow user to "go to" next record or previous record in the load profile for the site %>		
+		<div class="left">
+			<%if SiteLoadProfile.check_previous(@site.id, session[:selected_site_load_profile_id]) %>
+				<%= button_to "(previous month)", action: "change_site_load_profile", site_id: @site.id, 
+					selected_site_load_profile_id: session[:selected_site_load_profile_id], 
+					next_or_previous: 'previous' %>
+
+			<% else %>
+				(previous month)
+
+			<% end %>
+			
+		</div>
+		
+		<div class="right">
+			<%if SiteLoadProfile.check_next(@site.id, session[:selected_site_load_profile_id]) %>
+				<%= button_to "(next month)", action: "change_site_load_profile", site_id: @site.id, 
+					selected_site_load_profile_id: session[:selected_site_load_profile_id], 
+					next_or_previous: 'next' %>
+
+			<% else %>
+				(next month)
+
+			<% end %>
+		</div>
+
+		<%# button_to "Previous" %>
+
 	</p>
 
 	 <!-- this area shows the header information for the bill -->
  	<p>
 		kWh used = <%= @usage %>
 		<%#= link_to "(edit usage)" %>
-		<a href="#" onclick="prompt('New Usage:'); return false">(edit usage)</a>
+		<!--<a href="#" onclick="prompt('New Usage:'); return false">(edit usage)</a>-->
 	</p>
 	<p>
 		Billed Load in kW = <%= @demand %>
@@ -45,12 +89,16 @@
 	</p>
 </div>
 
+<div>
+		<%= link_to "Enter New Site Info", '/input' %>
+</div>
+
 <!-- sorts the line items by bill group -->
 <% @line_items.sort_by{ |i| i.bill_group_order} %>
 <% @bill_groups.sort_by{ |i| i.bill_group_order} %>
 
 <% @bill_total = 0 %>
-<% @bill_groups.each do |j| %>
+ <% @bill_groups.each do |j| %>
 
 	<!-- shows the name of the section of the bill -->
 	<h5><%= j.bill_group_name %></h5>

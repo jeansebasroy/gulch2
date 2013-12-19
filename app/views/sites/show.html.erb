@@ -1,8 +1,12 @@
 
 <h1>Sites: </h1>
+
+<p id="notice"><%= notice %></p>
+
 <% if current_user.sites.count(:is_site_saved) > 0 %>
       <table>
             <tr>
+                  <td>Site Selected?</td>
                   <td>Site Name:</td>
                   <td>Company:</td>
                   <td>City:</td>

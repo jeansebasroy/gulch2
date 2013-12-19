@@ -1,10 +1,6 @@
 class SiteLoadProfilesController < ApplicationController
 	before_action :signed_in_user
 
-	def new
-		@site_load_profile = SiteLoadProfile.new
-	end
-
 	def create
 		@site = Site.find(params[:site_load_profile][:site_id])
 		@site_load_profile = SiteLoadProfile.new(site_load_profile_params)
@@ -40,14 +36,6 @@ class SiteLoadProfilesController < ApplicationController
 
 	end
 
-	def show
-		@site = Site.find(params[:id])
-		@site_load_profile = SiteLoadProfile.new
-	end
-
-	def edit
-	end
-
 	def delete
 		@site = Site.find(params[:site_id])
 		@site_load_profile = SiteLoadProfile.find(params[:id])
@@ -64,6 +52,26 @@ class SiteLoadProfilesController < ApplicationController
 
 	end
 
+	def edit
+	end
+
+	def new
+		@site_load_profile = SiteLoadProfile.new
+	end
+
+	def select_site
+		#for storing selected_site information
+		@site = Site.find(params[:site_id])
+		session[:selected_site_id] = @site.id
+		#flash[:notice] = session[:selected_site_id]
+		redirect_to site_load_profile_path(@site)
+
+	end
+
+	def show
+		@site = Site.find(params[:id])
+		@site_load_profile = SiteLoadProfile.new
+	end
 
 	private
 

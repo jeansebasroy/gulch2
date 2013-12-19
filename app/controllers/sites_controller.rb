@@ -16,13 +16,28 @@ class SitesController < ApplicationController
 		end
 	end
 
-	def show
-		#@site = Site.find(params[:id])
-		#@user = User.find(params[:id])
+	def destroy
 	end
+
 
 	def edit
 		@site = Site.find(params[:id])
+	end
+
+
+	def select
+		#for storing selected_site information
+		@site = Site.find(params[:site_id])
+		session[:selected_site_id] = @site.id
+		session[:selected_site_load_profile_id] = nil
+		#flash[:notice] = session[:selected_site_load_profile_id]
+		redirect_to site_path(current_user)
+
+	end
+
+	def show
+		#@site = Site.find(params[:id])
+		#@user = User.find(params[:id])
 	end
 
 	def update
@@ -36,16 +51,13 @@ class SitesController < ApplicationController
 		end
 	end
 
-	def destroy
-	end
-
 	private
 
 	  	def site_params
 	  		params.require(:site).permit(:site_name, :company, 
 	  						:industry_type, :building_type, :description, 
 	  						:address, :city, :state, :zip_code, :square_feet, 
-	  						:phases, :user_id)
+	  						:phases, :user_id, :is_site_saved)
 	  	end
 
 end

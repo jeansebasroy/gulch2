@@ -14,31 +14,51 @@ describe "Tariff Tool pages" do
        	click_button "Sign in"
     end
 
-    before { visit '/input' }
-    # => need to fix this hack; point to an actual route
-	
+	# sets up tariff_tool data in the database so tariff_tool will work properly
+	let(:utility) 				{ FactoryGirl.create(:tariff_utility) }
+	let(:territory) 			{ FactoryGirl.create(:tariff_territory, tariff_utility: utility) }
+	let(:zip_code) 				{ FactoryGirl.create(:tariff_zip_code) }
+	#let(:territory_zip)	{ FactoryGirl.create(:tariff_territory_zip_code_rel, 
+	#								tariff_territory: territory, tariff_zip_code: zip_code) }
+	let(:season_all)			{ FactoryGirl.create(:tariff_season_all, tariff_territory: territory) }
+	let(:season_winter)			{ FactoryGirl.create(:tariff_season_winter, tariff_territory: territory) }
+	#let(:meter_read_october)	{ FactoryGirl.create(:tariff_meter_read_october, 
+	#								tariff_territory: territory) }
+	#let(:meter_read_november)	{ FactoryGirl.create(:tariff_meter_read_november,
+	#								tariff_territory: territory)}
+	let(:billing_class)			{ FactoryGirl.create(:tariff_billing_class, tariff_territory: territory) }
+	let(:tariff_energy)			{ FactoryGirl.create(:tariff_tariff_energy, tariff_billing_class: billing_class) }
+	let(:tariff_delivery)		{ FactoryGirl.create(:tariff_tariff_delivery, tariff_billing_class: billing_class) }
+	let(:bill_group_energy) 	{ FactoryGirl.create(:tariff_bill_group_energy, tariff_billing_class: billing_class) }
+	let(:bill_group_delivery) 	{ FactoryGirl.create(:tariff_bill_group_delivery, tariff_billing_class: billing_class) }
+
+	#let(:line_items_fixed)		{ FactoryGirl.create(:tariff_line_item_fixed, tariff_tariff: tariff_delivery, 
+	#								tariff_season: season_all, tariff_bill_group: bill_group_delivery) }	
+
+    before { click_link 'Bill Comparison' }
+    #before { visit '/input' }
+    
+    # without a selected site, user should be redirected to '/input'
 	describe "Input page" do
 
-		let(:utility) 				{ FactoryGirl.create(:tariff_utility) }
-		let(:territory) 			{ FactoryGirl.create(:tariff_territory, tariff_utility: utility) }
-		let(:zip_code) 				{ FactoryGirl.create(:tariff_zip_code) }
-		#let(:territory_zip)	{ FactoryGirl.create(:tariff_territory_zip_code_rel, 
-		#								tariff_territory: territory, tariff_zip_code: zip_code) }
-		let(:season_all)			{ FactoryGirl.create(:tariff_season_all, tariff_territory: territory) }
-		let(:season_winter)			{ FactoryGirl.create(:tariff_season_winter, tariff_territory: territory) }
-		#let(:meter_read_october)	{ FactoryGirl.create(:tariff_meter_read_october, 
-		#								tariff_territory: territory) }
-		#let(:meter_read_november)	{ FactoryGirl.create(:tariff_meter_read_november,
-		#								tariff_territory: territory)}
-		let(:billing_class)			{ FactoryGirl.create(:tariff_billing_class, tariff_territory: territory) }
-		let(:tariff_energy)			{ FactoryGirl.create(:tariff_tariff_energy, tariff_billing_class: billing_class) }
-		let(:tariff_delivery)		{ FactoryGirl.create(:tariff_tariff_delivery, tariff_billing_class: billing_class) }
-		let(:bill_group_energy) 	{ FactoryGirl.create(:tariff_bill_group_energy, tariff_billing_class: billing_class) }
-		let(:bill_group_delivery) 	{ FactoryGirl.create(:tariff_bill_group_delivery, tariff_billing_class: billing_class) }
+		it { should have_selector('div.alert.alert-notice', text: "No Site currently selected.") }
 
-		#let(:line_items_fixed)		{ FactoryGirl.create(:tariff_line_item_fixed, tariff_tariff: tariff_delivery, 
-		#								tariff_season: season_all, tariff_bill_group: bill_group_delivery) }			
-			
+		it { should have_title('Input') }
+		it { should have_content('Zip code') }
+		it { should have_content('Phases') }
+		it { should have_content('All Demand (in kW)') }
+		it { should have_content('All Usage (in kWh)') }
+		it { should have_content('Meter Read Date (yyyy-mm-dd)') }
+		
+		it { should_not have_content('View Demo') }
+		it { should_not have_content('Contact') }
+		it { should_not have_content('Sign In') }
+
+		it { should have_content('Profile') }
+		it { should have_content('Site') }
+		it { should have_content('Bill Comparison') }
+		
+		it { should have_link('Sign Out',			href: signout_path) }
 
 		before do
 			@test_territory_zip = TariffTerritoryZipCodeRel.create(tariff_territory_id: territory.id,
@@ -57,22 +77,6 @@ describe "Tariff Tool pages" do
 					tariff_bill_group_id: bill_group_delivery.id)
 		end
 
-		it { should have_title('Input') }
-		it { should have_content('Zip code') }
-		it { should have_content('Phases') }
-		it { should have_content('All Demand (in kW)') }
-		it { should have_content('All Usage (in kWh)') }
-		it { should have_content('Meter Read Date (yyyy-mm-dd)') }
-		
-		it { should_not have_content('View Demo') }
-		it { should_not have_content('Contact') }
-		it { should_not have_content('Sign In') }
-
-		#it { should have_content('Profile') }
-		it { should have_content('Bill Comparison') }
-		it { should have_link('Bill Comparison', 	href: '/input') }
-		it { should have_link('Sign Out',			href: signout_path) }
-		
 		describe "after invalid Input submission" do
 			
 			describe "with zip code not in the database" do
