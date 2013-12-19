@@ -1,4 +1,5 @@
 Gulch2::Application.routes.draw do
+  resources :usage_fetcher
   resources :password_resets
   resources :sessions,      only: [:new, :create, :destroy]
   resources :sites

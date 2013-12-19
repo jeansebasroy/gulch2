@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131211153405) do
+ActiveRecord::Schema.define(version: 20131219172732) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -225,6 +225,13 @@ ActiveRecord::Schema.define(version: 20131211153405) do
   end
 
   create_table "tariff_zip_codes", force: true do |t|
+    t.string   "zip_code"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "usage_fetchers", force: true do |t|
+    t.string   "account_no"
     t.string   "zip_code"
     t.datetime "created_at"
     t.datetime "updated_at"

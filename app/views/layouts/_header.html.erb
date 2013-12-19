@@ -7,6 +7,7 @@
             <li><%= link_to "Profile",          current_user %></li>
             <li><%= link_to "Sites",            site_path(current_user) %></li>
             <li><%= link_to "Bill Comparison",  tool_path %></li>
+            <li><%= link_to "Get Usage",        new_usage_fetcher_path %></li>
             <li><%= link_to "Sign Out",         signout_path %></li>            
           <% else %>
             <li><%= link_to "View Demo",  signin_path %></li>

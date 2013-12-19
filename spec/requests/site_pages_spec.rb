@@ -230,12 +230,22 @@ describe "Site Pages" do
                   
             describe "view selected site in Bill Comparison tool" do
 
+              before do 
+                fill_in "Meter read date",      with: '2013-11-01'
+                fill_in "All Demand (in kW)",   with: '100'
+                fill_in "All Usage (in kWh)",   with: '10000'
+              end
+
+              before { click_button change_data }
+
               before do
                 @test_territory_zip = TariffTerritoryZipCodeRel.create(tariff_territory_id: territory.id,
                     tariff_zip_code_id: zip_code.id)
                 @test_meter_read1 = TariffMeterRead.create(meter_read_date: "2013-09-27", billing_month: "October", 
                     billing_year: "2013" , tariff_territory_id: territory.id)
                 @test_meter_read2 = TariffMeterRead.create(meter_read_date: "2013-10-29", billing_month: "November", 
+                    billing_year: "2013" , tariff_territory_id: territory.id)
+                @test_meter_read3 = TariffMeterRead.create(meter_read_date: "2013-11-27", billing_month: "September", 
                     billing_year: "2013" , tariff_territory_id: territory.id)
                 @test_line_item1 = TariffLineItems.create(line_item_name: "BGS-FP (Winter)", line_item_type: "$/kWh", 
                     effective_date: "2013-05-29", expiration_date: "", line_item_rate: "0.095672", tou_type: "All",
@@ -253,10 +263,51 @@ describe "Site Pages" do
               it { should_not have_title('Site Details and Load Profile') }
               
               it { should have_content('Billing Period:') }
-              it { should have_content('kWh used = 20000') }
+              it { should have_content('kWh used = 10000') }
               it { should have_content('Billed Load in kW =') }
               it { should have_content('Rate Class:') }
               it { should have_content('Total Bill =') }
+
+              it { should have_button('(previous month)') }
+              it { should_not have_button('(next month)') }
+
+              it { should have_link('Enter New Site Info') }
+
+              describe "view 'previous month' bill" do
+              
+                before { click_button '(previous month)' }
+
+                it { should have_title('Bill Comparison') }
+                it { should have_content('kWh used = 20000') }
+                it { should_not have_content('kWh used = 10000') }
+
+                it { should_not have_button('(previous month)') }
+                it { should have_button('(next month)') }
+
+                describe "view 'next month' bill" do
+                
+                  before { click_button '(next month)' }
+                  
+                  it { should have_title('Bill Comparison') }
+                  it { should_not have_content('kWh used = 20000') }
+                  it { should have_content('kWh used = 10000') }
+
+                  it { should have_button('(previous month)') }
+                  it { should_not have_button('(next month)') }
+
+                end
+
+              end
+
+              describe "create new site on-the-fly" do
+
+                before { click_link('Enter New Site Info') }
+
+                it { should have_title('Inputs') }
+                it { should_not have_title('Bill Comparison') }
+
+              end
+
 
             end
 

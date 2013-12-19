@@ -25,6 +25,9 @@ class UsersController < ApplicationController
 
   def edit
     @user = User.find(params[:id])
+    flash.now[:notice] = "Contact 'support@gulchsolutions.com' if you wish to update your infomation."    
+    render 'show'
+
   end
 
   def update

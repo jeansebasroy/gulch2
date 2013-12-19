@@ -177,8 +177,26 @@ describe "User Pages" do
     it { should have_link('Edit Profile') }
 
     describe "Edit user profile page" do
-# => need to insert tests & capabilities      
+      before { click_link 'Edit Profile Info' }
+
+      it { should have_selector('div.alert.alert-notice', text: "Contact 'support@gulchsolutions.com' if you wish to update your infomation.") }
+      
+      # User Profile
+      it { should have_title('Profile') }
+      it { should have_content(user.first_name) }
+      it { should have_content(user.last_name) }
+      it { should have_content(user.email) }
+      it { should have_content(user.phone) }
+      it { should have_content(user.company) }
+      it { should have_content(user.address) }
+      it { should have_content(user.city) }
+      it { should have_content(user.state) }
+      it { should have_content(user.zip) }
+
+      it { should have_link('Edit Profile') }
+          
     end
+    
   end   
 
 #  describe "edit" do
