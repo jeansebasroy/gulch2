@@ -57,7 +57,7 @@ class SitesController < ApplicationController
 	  		params.require(:site).permit(:site_name, :company, 
 	  						:industry_type, :building_type, :description, 
 	  						:address, :city, :state, :zip_code, :square_feet, 
-	  						:phases, :user_id, :is_site_saved)
+	  						:phases, :user_id, :is_site_saved, :account_no)
 	  	end
 
 end

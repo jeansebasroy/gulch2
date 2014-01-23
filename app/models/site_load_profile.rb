@@ -83,4 +83,13 @@ class SiteLoadProfile < ActiveRecord::Base
 
 	end
 
+	def self.to_csv
+		CSV.generate do |CSV|
+			csv << column_names
+			all.each do |site_load_profile|
+				csv << site_load_profile.attributes.values_at(*column_names)
+			end
+	end
+
+
 end

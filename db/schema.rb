@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131219172732) do
+ActiveRecord::Schema.define(version: 20140122152954) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -53,6 +53,7 @@ ActiveRecord::Schema.define(version: 20131219172732) do
     t.integer  "user_id"
     t.binary   "site_saved"
     t.boolean  "is_site_saved"
+    t.string   "account_no"
   end
 
   create_table "tariff_bill_groups", force: true do |t|

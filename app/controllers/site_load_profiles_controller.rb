@@ -55,6 +55,13 @@ class SiteLoadProfilesController < ApplicationController
 	def edit
 	end
 
+	def export_load_profile
+		@site = Site.find(:id = 400)
+
+
+	end
+
+
 	def new
 		@site_load_profile = SiteLoadProfile.new
 	end
@@ -71,6 +78,12 @@ class SiteLoadProfilesController < ApplicationController
 	def show
 		@site = Site.find(params[:id])
 		@site_load_profile = SiteLoadProfile.new
+
+		respond_to do |format|
+			format.html
+			format.csv { render text: @site_load_profiles.to_csv }
+		end
+
 	end
 
 	private
