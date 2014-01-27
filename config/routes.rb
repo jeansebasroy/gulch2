@@ -16,6 +16,9 @@ Gulch2::Application.routes.draw do
   match '/input',   to: 'tariff_tools#input',   via: 'get'
   match '/tool',    to: 'tariff_tools#tool',    via: 'get'
 
+
+  match '/site_load_profiles', to: 'site_load_profiles#export', via: 'get'
+
   match '/input/save', to: 'tariff_tools#create', via: 'post'
       #fix this hack
   post '/site_load_profiles/:id'=> 'site_load_profiles#delete'

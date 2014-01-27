@@ -55,6 +55,37 @@ class SiteLoadProfilesController < ApplicationController
 	def edit
 	end
 
+	def export_usage_data
+		#@site = Site.find(params[:id])
+		#@site_load_profile = SiteLoadProfile.where('site_id = ?',
+		#											'400')
+
+		#csv << ["Meter Read Date", "Total Usage", "Total Demand"]
+		#@site_load_profile.each do |site_load_profile|
+		#	csv << [site_load_profile.meter_read_date, site_load_profile.total_usage, 
+		#		site_load_profile.total_demand]
+		#end
+		
+
+		#send_data(site_load_profile_csv, :type => 'text/csv', :filename => 'site_load_profile.csv')
+		#send_data(student_csv, :type => 'text/csv', :filename => 'all_students.csv')
+
+
+		#format.xls { send_data @site.to_xls(col_sep: "\t") }
+	end
+
+	def index
+#		site_id = params[:site_id]
+		
+#		@site_load_profiles = SiteLoadProfile.order(:meter_read_date)
+
+#		respond_to do |format|
+#			format.html
+#			format.csv { send_data @site_load_profiles.to_csv(site_id) }
+#		end
+
+	end
+
 	def new
 		@site_load_profile = SiteLoadProfile.new
 	end
@@ -71,6 +102,12 @@ class SiteLoadProfilesController < ApplicationController
 	def show
 		@site = Site.find(params[:id])
 		@site_load_profile = SiteLoadProfile.new
+		@site_load_profiles = SiteLoadProfile.order(:meter_read_date).reverse_order
+
+		respond_to do |format|
+			format.html
+			format.csv { send_data @site_load_profiles.to_csv(@site.id) }
+		end
 	end
 
 	private

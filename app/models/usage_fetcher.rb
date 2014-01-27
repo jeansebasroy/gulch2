@@ -39,18 +39,28 @@ class UsageFetcher < ActiveRecord::Base
 
 		#checks to see if a site with the given account_no exists
 # => use user_id to verify that user has access to that 'site'; check if user_id is admin, etc.
+		@usage_fetch_site_id = '401'
+
 		existing_site = Site.where('user_id = ? AND account_no = ? AND zip_code = ?',
 									user_id, account_no, zip_code)
-
+		
 		if existing_site.count == 0
 			#creates new site if one does not match the criteria
-			site_of_account_no = Site.new(:user_id => 1, :site_name => 'Usage_Fetcher',
+			site_of_account_no = Site.new(:user_id => user_id, :site_name => 'Usage_Fetcher',
 										:account_no => account_no, :zip_code => zip_code, 
 										:is_site_saved => true)
 			site_of_account_no.save
 
+			@usage_fetch_site_id = site_of_account_no.id
+			#@usage_fetch_site_id = '402'
+			#@usage_fetch_site_id = existing_site.count
+
 		else
 			site_of_account_no = existing_site.last
+
+			@usage_fetch_site_id = existing_site.last.id
+			#@usage_fetch_site_id = '403'
+
 		end
 
 		#scrapes data for site_load_profile
@@ -111,11 +121,21 @@ class UsageFetcher < ActiveRecord::Base
 		browser.window.close
 		
 		#returns something
-		#j
-		#check_meter_read_date
+		#'400'
+		#site_of_account_no.id = 400
 		#site_of_account_no.id
-		#'It works'
-		account_no
+		#usage_fetch_site_id = site_of_account_no.id
+
+		#usage_fetch_site_id = existing_site_load_profile.last.site_id
+		# => returns 'undefined variable', because var in if statement?
+
+		#@usage_fetch_site_id = existing_site.last.id
+		# => returns 'undefined method for nil class'
+
+		#@usage_fetch_site_id = '400'
+		#@usage_fetch_site_id
+		site_of_account_no.id
+		#user_id
 
 	end
 

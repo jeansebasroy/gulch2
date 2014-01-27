@@ -83,4 +83,19 @@ class SiteLoadProfile < ActiveRecord::Base
 
 	end
 
+	def self.to_csv(site_id)
+		CSV.generate do |csv|
+			csv << ["Site_id", "Meter Read Date", "Total Usage (kWh)", "Total Demand (kW)"]
+
+			@site_load_profile = SiteLoadProfile.where('site_id = ?', site_id)
+
+			@site_load_profile.each do |site_load_profile|
+				csv << [site_load_profile.site_id, site_load_profile.meter_read_date, 
+						site_load_profile.all_usage, site_load_profile.all_demand]
+			end
+			
+		end	
+
+	end
+
 end

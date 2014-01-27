@@ -1,0 +1,35 @@
+<h1> Testing CSV Export </h1>
+<!-- built for testing CSV export --> 
+
+<p id="notice"><%= notice %></p>
+
+<p>
+<table>
+      <tr>
+            <td>Meter Read Date:</td>
+            <!-- <td>Data Source:</td> -->
+            <td>All Usage (kWh):</td>
+            <td>On-Peak Usage (kWh):</td>
+            <td>Part-Peak Usage (kWh):</td>
+            <td>Off-Peak Usage (kWh):</td>
+            <td>All Demand (kW):</td>
+            <td>On-Peak Demand (kW):</td>
+            <td>Part-Peak Demand (kW):</td>
+            <td>Off-Peak Demand (kW):</td>
+      </tr>
+            
+      <% SiteLoadProfile.find_each do |i| %>
+            <tr>
+                  <td><%= i.all_usage %></td>
+                  <td><%= i.on_peak_usage %></td>
+                  <td><%= i.part_peak_usage %></td>
+                  <td><%= i.off_peak_usage %></td>
+                  <td><%= i.all_demand %></td>
+                  <td><%= i.on_peak_demand %></td>
+                  <td><%= i.part_peak_demand %></td>
+                  <td><%= i.off_peak_demand %></td>
+            </tr>
+      <% end %>
+           
+</table>
+</p>

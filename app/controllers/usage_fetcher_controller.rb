@@ -9,14 +9,24 @@ class UsageFetcherController < ApplicationController
 		
 		account_no = @usage_fetcher.account_no
 		zip_code = @usage_fetcher.zip_code
-		user_id = session[:user_id]
-		@usage_data = UsageFetcher.fetch_IL_ComEd(account_no, zip_code, user_id)
-												
-		flash.now[:notice] = @usage_data		
+		user_id = current_user.id
+		@usage_fetch_site_id = UsageFetcher.fetch_IL_ComEd(account_no, zip_code, user_id)
+		
 
-		#flash.now[:notice] = "'Get Usage' is under development.  Check back in a few weeks."
-		render new_usage_fetcher_path
-# => redirect to the site_load_profile page for the site for which data was 'fetched'		
+		#@usage_fetch_site_id = '400'
+		#@usage_fetch_site_id = user_id
+
+		#tests what gets returned from method
+		#if @usage_fetch_site_id.nil?
+		#	flash.now[:notice] = 'Nothing returned'
+		#else
+		#	flash.now[:notice] = @usage_fetch_site_id
+		#end
+		#render new_usage_fetcher_path
+
+		#redirects user to 'show' page for 'site' for which usage data was just fetched
+		redirect_to site_load_profile_path(:id => @usage_fetch_site_id), notice: 'Usage Data has been sucessfully downloaded from ComEd.'
+
 	end
 
 	def new

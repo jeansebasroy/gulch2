@@ -52,14 +52,11 @@
     	</div>
 
       	<br>
-      	<br>
 
-		<div class="center">
-      		<%= f.label :description %>
-      		<%= f.text_field :description %>
-      	</div>
-
-    	<br>
+    <div class="center">
+          <%= f.label :account_no %>
+          <%= f.text_field :account_no %>
+        </div>
 
       	<div class="left">
       		<%= f.label :phases %>
@@ -71,8 +68,12 @@
       		<%= f.text_field :square_feet %>
      	</div>
 
+    <div class="center">
+          <%= f.label :description %>
+          <%= f.text_field :description %>
+        </div>
+
      	<br> <!-- enters a blank line, ie: line break -->
-     	<br>
      			
       <%= f.submit "Update Site Info", class: "btn btn-med btn-custom" %>
     <% end %>

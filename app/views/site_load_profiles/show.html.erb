@@ -47,6 +47,10 @@
             <td><%= @site.zip_code %></td>
       </tr>
       <tr>
+            <td> Account Number: </td>
+            <td><%= @site.account_no %></td>
+      </tr>
+      <tr>
             <td> Phases: </td>
             <td><%= @site.phases %></td>
 
@@ -84,6 +88,9 @@
 <h1>Site Load Profile: </h1>
 
 
+<%= link_to 'Export Usage Data', site_load_profile_path(format: "csv") %>
+
+
 <% if @site.site_load_profiles.any? %>
       <table>
             <tr>
@@ -107,7 +114,6 @@
 <% else %>
 <p> No load profile saved </p>
 <% end %>
-
 
 <h1>Change Site Load Profile:</h1>
 <div class="row">
