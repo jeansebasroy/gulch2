@@ -3,6 +3,7 @@ class Site < ActiveRecord::Base
 	has_many :site_load_profiles, dependent: :destroy
 
 	#VALID_ZIP_REGEX = /\d{5}/ 								#zip_code
+
 	validates :zip_code, numericality: true, 
 				length: {minimum: 5, maximum: 5}
 	#validates :square_feet, numericality: true

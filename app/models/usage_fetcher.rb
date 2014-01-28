@@ -29,113 +29,115 @@ class UsageFetcher < ActiveRecord::Base
 		
 		browser.link(:id => 'ctl00_SPWebPartManager1_g_1bb6dc86_55ab_4ea9_a4db_4747922a8202_ctl00_ViewUsagebtn').click
 
-		#points Nokogiri to the newly opened browser window
-		browser.window(:title => "| ComEd - An Exelon Company").use
+		# => if an invalid account_no is submitted, a new browser window is not opened, and this is where the program breaks
 		data = Nokogiri::HTML.parse(browser.html)
 
-		#scrapes data for site
-		supply_group = data.at_css(':nth-child(5) td.noborder').text
-		
+		is_account_no_valid = data.css('#ctl00_SPWebPartManager1_g_1bb6dc86_55ab_4ea9_a4db_4747922a8202_ctl00_lblValMsg').text
 
-		#checks to see if a site with the given account_no exists
-# => use user_id to verify that user has access to that 'site'; check if user_id is admin, etc.
-		@usage_fetch_site_id = '401'
+		if is_account_no_valid == 'Account number is not valid.'
 
-		existing_site = Site.where('user_id = ? AND account_no = ? AND zip_code = ?',
-									user_id, account_no, zip_code)
-		
-		if existing_site.count == 0
-			#creates new site if one does not match the criteria
-			site_of_account_no = Site.new(:user_id => user_id, :site_name => 'Usage_Fetcher',
-										:account_no => account_no, :zip_code => zip_code, 
-										:is_site_saved => true)
-			site_of_account_no.save
+			# closes the opened window
+			browser.window(:title => "Usage Data | ComEd - An Exelon Company").use
+			browser.window.close
 
-			@usage_fetch_site_id = site_of_account_no.id
-			#@usage_fetch_site_id = '402'
-			#@usage_fetch_site_id = existing_site.count
+			'Account Number is invalid.'
 
 		else
-			site_of_account_no = existing_site.last
 
-			@usage_fetch_site_id = existing_site.last.id
-			#@usage_fetch_site_id = '403'
+			#points Nokogiri to the newly opened browser window
+			browser.window(:title => "| ComEd - An Exelon Company").use
+			data = Nokogiri::HTML.parse(browser.html)
 
-		end
+			#scrapes data for site
+			supply_group = data.at_css(':nth-child(5) td.noborder').text
+			
+			#checks to see if a site with the given account_no exists
+	# => use user_id to verify that user has access to that 'site'; check if user_id is admin, etc.
+			@usage_fetch_site_id = '401'
 
-		#scrapes data for site_load_profile
-		#determines the number of meter_read_dates
-		meter_read_date = data.css(':nth-child(6) td:nth-child(2)')
+			existing_site = Site.where('user_id = ? AND account_no = ? AND zip_code = ?',
+										user_id, account_no, zip_code)
+			
+			if existing_site.count == 0
+				#creates new site if one does not match the criteria
+				site_of_account_no = Site.new(:user_id => user_id, :site_name => 'Usage_Fetcher',
+											:account_no => account_no, :zip_code => zip_code, 
+											:is_site_saved => true)
+				site_of_account_no.save
 
-		# cycles through every meter_read_date
-		j = 0
-
-		meter_read_date.each do |i|
-			# usage data
-			total_kwh_usage = data.css(':nth-child(6) td:nth-child(4)')[j].text
-			on_peak_kWh_usage = data.css(':nth-child(6) td:nth-child(5)')[j].text
-			off_peak_kwh_usage = data.css(':nth-child(6) td:nth-child(6)')[j].text
-
-			# demand data
-			billing_demand = data.css(':nth-child(6) td:nth-child(7)')[j].text
-
-			# meter_read_date in right format
-			month = i.text[0..1]
-			day = i.text[3..4]
-			year = i.text[6..9]
-			formatted_meter_read_date = year + '-' + month + '-' + day
-
-			#checks to see if a site_load_profile with the current meter_read_date exists for that site
-			existing_site_load_profile = SiteLoadProfile.where('site_id = ? AND meter_read_date =?',
-																site_of_account_no.id, formatted_meter_read_date)
-
-			if existing_site_load_profile.count == 0
-				#creates new site_load_profile for newly created site with usage data pulled from ComEd PowerPath
-				site_load_profile = SiteLoadProfile.new(:meter_read_date => formatted_meter_read_date, :all_usage => total_kwh_usage,
-														:on_peak_usage => on_peak_kWh_usage, :off_peak_usage => off_peak_kwh_usage, 
-														:all_demand => billing_demand,
-														:site_id => site_of_account_no.id, :data_source => 'Monthly')		
-				site_load_profile.save
+				@usage_fetch_site_id = site_of_account_no.id
+				#@usage_fetch_site_id = '402'
+				#@usage_fetch_site_id = existing_site.count
 
 			else
-				#updates existing record
-				existing_site_load_profile.last.update(:meter_read_date => formatted_meter_read_date, :all_usage => total_kwh_usage,
-														:on_peak_usage => on_peak_kWh_usage, :off_peak_usage => off_peak_kwh_usage, 
-														:all_demand => billing_demand,
-														:site_id => site_of_account_no.id, :data_source => 'Monthly')
+				site_of_account_no = existing_site.last
 
-# => give the user the option to select whether or not to over-write existing data (for future development)
-			
+				@usage_fetch_site_id = existing_site.last.id
+				#@usage_fetch_site_id = '403'
+
 			end
 
-			#increments j
-			j += 1
+			#scrapes data for site_load_profile
+			#determines the number of meter_read_dates
+			meter_read_date = data.css(':nth-child(6) td:nth-child(2)')
 
+			# cycles through every meter_read_date
+			j = 0
+
+			meter_read_date.each do |i|
+				# usage data
+				total_kwh_usage = data.css(':nth-child(6) td:nth-child(4)')[j].text
+				on_peak_kWh_usage = data.css(':nth-child(6) td:nth-child(5)')[j].text
+				off_peak_kwh_usage = data.css(':nth-child(6) td:nth-child(6)')[j].text
+
+				# demand data
+				billing_demand = data.css(':nth-child(6) td:nth-child(7)')[j].text
+
+				# meter_read_date in right format
+				month = i.text[0..1]
+				day = i.text[3..4]
+				year = i.text[6..9]
+				formatted_meter_read_date = year + '-' + month + '-' + day
+
+				#checks to see if a site_load_profile with the current meter_read_date exists for that site
+				existing_site_load_profile = SiteLoadProfile.where('site_id = ? AND meter_read_date =?',
+																	site_of_account_no.id, formatted_meter_read_date)
+
+				if existing_site_load_profile.count == 0
+					#creates new site_load_profile for newly created site with usage data pulled from ComEd PowerPath
+					site_load_profile = SiteLoadProfile.new(:meter_read_date => formatted_meter_read_date, :all_usage => total_kwh_usage,
+															:on_peak_usage => on_peak_kWh_usage, :off_peak_usage => off_peak_kwh_usage, 
+															:all_demand => billing_demand,
+															:site_id => site_of_account_no.id, :data_source => 'Monthly')		
+					site_load_profile.save
+
+				else
+					#updates existing record
+					existing_site_load_profile.last.update(:meter_read_date => formatted_meter_read_date, :all_usage => total_kwh_usage,
+															:on_peak_usage => on_peak_kWh_usage, :off_peak_usage => off_peak_kwh_usage, 
+															:all_demand => billing_demand,
+															:site_id => site_of_account_no.id, :data_source => 'Monthly')
+
+	# => give the user the option to select whether or not to over-write existing data (for future development)
+				
+				end
+
+				#increments j
+				j += 1
+
+			end
+
+			#closes windows that have been opened
+			browser.window(:title => "| ComEd - An Exelon Company").use
+			browser.window.close
+
+			browser.window(:title => "Usage Data | ComEd - An Exelon Company").use
+			browser.window.close
+			
+			#returns something
+			site_of_account_no.id
+			
 		end
-
-		#closes windows that have been opened
-		browser.window(:title => "| ComEd - An Exelon Company").use
-		browser.window.close
-
-		browser.window(:title => "Usage Data | ComEd - An Exelon Company").use
-		browser.window.close
-		
-		#returns something
-		#'400'
-		#site_of_account_no.id = 400
-		#site_of_account_no.id
-		#usage_fetch_site_id = site_of_account_no.id
-
-		#usage_fetch_site_id = existing_site_load_profile.last.site_id
-		# => returns 'undefined variable', because var in if statement?
-
-		#@usage_fetch_site_id = existing_site.last.id
-		# => returns 'undefined method for nil class'
-
-		#@usage_fetch_site_id = '400'
-		#@usage_fetch_site_id
-		site_of_account_no.id
-		#user_id
 
 	end
 
