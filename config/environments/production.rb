@@ -86,11 +86,6 @@ Gulch2::Application.configure do
   # config.autoflush_log = false
 
   # Use default logging formatter so that PID and timestamp are not suppressed.
-  config.log_formatter = ::Logger::Formatter.new
-
-  # For Phantomjs
-  PATH="/usr/local/bin:/usr/bin:/bin:/app/vendor/phantomjs/bin"
-  LD_LIBRARY_PATH="/usr/local/lib:/usr/lib:/lib:/app/vendor/phantomjs/lib"
- 
+  config.log_formatter = ::Logger::Formatter.new 
 
 end
