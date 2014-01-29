@@ -12,19 +12,15 @@ class UsageFetcher < ActiveRecord::Base
 		#this code scrapes the "View Usage Data" after submitting the account_no on the ComEd PowerPath website
 		# the usage data is written to the database
 		require 'watir-webdriver'
-		require 'headless'
 		require 'nokogiri'
 		require 'open-uri'
-		#require 'phantomjs'
-
-# => attempt at headless browsing
-#		headless = Headless.new
-#		headless.start
-#		browser = Watir::Browser.start 'https://www.comed.com/customer-service/rates-pricing/customer-choice/Pages/usage-data.aspx'
+		require 'phantomjs'
 
 		#submits account number to ComEd to get to Usage Data
-		#browser = Watir::Browser.new :phantomjs
-		browser = Watir::Browser.new 
+		browser = Watir::Browser.new :phantomjs
+		# => headless browser
+		#browser = Watir::Browser.new 
+		# => with Firefox (can see what's happening)
 
 		browser.goto 'https://www.comed.com/customer-service/rates-pricing/customer-choice/Pages/usage-data.aspx'
 
@@ -45,7 +41,7 @@ class UsageFetcher < ActiveRecord::Base
 
 			# closes the opened window
 			browser.window(:title => "Usage Data | ComEd - An Exelon Company").use
-			browser.window.close
+			browser.close
 
 			'Account Number is invalid.'
 
@@ -138,14 +134,8 @@ class UsageFetcher < ActiveRecord::Base
 			browser.window(:title => "| ComEd - An Exelon Company").use
 			browser.window.close
 
-			browser.window(:title => "Usage Data | ComEd - An Exelon Company").use
-			browser.window.close
-			
+			browser.window(:title => "Usage Data | ComEd - An Exelon Company").use		
 			browser.close
-
-# => closes headless browsing
-#			browser.close
-#			headless.destroy
 
 			#returns something
 			site_of_account_no.id
