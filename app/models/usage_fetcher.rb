@@ -11,14 +11,21 @@ class UsageFetcher < ActiveRecord::Base
 	def self.fetch_IL_ComEd(account_no, zip_code, user_id)
 		#this code scrapes the "View Usage Data" after submitting the account_no on the ComEd PowerPath website
 		# the usage data is written to the database
-		require 'headless'
 		require 'watir-webdriver'
+		require 'headless'
 		require 'nokogiri'
 		require 'open-uri'
+		#require 'phantomjs'
+
+# => attempt at headless browsing
+#		headless = Headless.new
+#		headless.start
+#		browser = Watir::Browser.start 'https://www.comed.com/customer-service/rates-pricing/customer-choice/Pages/usage-data.aspx'
 
 		#submits account number to ComEd to get to Usage Data
-		browser = Watir::Browser.new
-		
+		#browser = Watir::Browser.new :phantomjs
+		browser = Watir::Browser.new 
+
 		browser.goto 'https://www.comed.com/customer-service/rates-pricing/customer-choice/Pages/usage-data.aspx'
 
 		browser.radio(:value => '1').set
@@ -134,6 +141,12 @@ class UsageFetcher < ActiveRecord::Base
 			browser.window(:title => "Usage Data | ComEd - An Exelon Company").use
 			browser.window.close
 			
+			browser.close
+
+# => closes headless browsing
+#			browser.close
+#			headless.destroy
+
 			#returns something
 			site_of_account_no.id
 			
