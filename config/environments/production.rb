@@ -40,7 +40,7 @@ Gulch2::Application.configure do
   # config.action_dispatch.x_sendfile_header = 'X-Accel-Redirect' # for nginx
 
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
-  # config.force_ssl = true
+  config.force_ssl = false
 
   # Set to :debug to see everything in the log.
   config.log_level = :info
@@ -87,10 +87,10 @@ Gulch2::Application.configure do
 
   # Use default logging formatter so that PID and timestamp are not suppressed.
   config.log_formatter = ::Logger::Formatter.new
-  
-  # Force all access to the app over SSL, use Strict-Transport-Security,
-  # and use secure cookies.
-  config.force_ssl = false
+
+  # For Phantomjs
+  PATH="/usr/local/bin:/usr/bin:/bin:/app/vendor/phantomjs/bin"
+  LD_LIBRARY_PATH="/usr/local/lib:/usr/lib:/lib:/app/vendor/phantomjs/lib"
  
 
 end
