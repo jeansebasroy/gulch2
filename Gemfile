@@ -11,7 +11,7 @@ gem 'capybara', '2.1.0'
 gem 'certified'
 gem 'watir-webdriver', '~> 0.6.4'
 gem 'selenium-webdriver', '2.39.0'
-gem 'headless', '~> 1.0.1'
+#gem 'headless', '~> 1.0.1'
 gem 'phantomjs.rb', '~> 2.0.0'
 gem 'newrelic_rpm'
 

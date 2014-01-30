@@ -13,7 +13,7 @@ class UsageFetcher < ActiveRecord::Base
 		# the usage data is written to the database
 		require 'watir-webdriver'
 		require 'nokogiri'
-		require 'open-uri'
+		#require 'open-uri'
 		require 'phantomjs'
 
 		#submits account number to ComEd to get to Usage Data
