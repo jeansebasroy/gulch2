@@ -93,6 +93,7 @@ GEM
       mini_portile (~> 0.5.0)
     ntlm-http (0.1.1)
     pg (0.17.1-x86-mingw32)
+    phantomjs.rb (2.0.0)
     polyglot (0.3.3)
     rack (1.5.2)
     rack-test (0.6.2)
@@ -193,6 +194,7 @@ DEPENDENCIES
   newrelic_rpm
   nokogiri (= 1.6.1)
   pg
+  phantomjs.rb (~> 2.0.0)
   rails (= 4.0.0)
   rails_12factor (= 0.0.2)
   rspec-rails (= 2.13.1)
