@@ -9,7 +9,7 @@ gem 'nokogiri', '1.6.1'
 gem 'capybara', '2.1.0'
 gem 'certified'
 gem 'watir-webdriver', '~> 0.6.4'
-gem 'selenium-webdriver', '2.39.0'
+#gem 'selenium-webdriver', '2.39.0'
 #gem 'headless', '~> 1.0.1'
 gem 'phantomjs.rb', '~> 2.0.0'
 #gem 'newrelic_rpm'
@@ -22,7 +22,6 @@ gem 'rails_12factor', '0.0.2'
 group :test do
 	gem 'factory_girl_rails', '4.2.1'
 	gem 'mechanize', '2.7.2'
-
 end
 
 # Use SCSS for stylesheets
