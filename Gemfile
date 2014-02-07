@@ -3,15 +3,18 @@ ruby '1.9.3'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.0.0'
-#gem 'mime-types', '1.25.1', '2.0'
 gem 'bootstrap-sass', '2.3.2.0'
 gem 'nokogiri', '1.6.1'
 gem 'capybara', '2.1.0'
 gem 'certified'
 gem 'watir-webdriver', '~> 0.6.4'
-#gem 'selenium-webdriver', '2.39.0'
-#gem 'headless', '~> 1.0.1'
+	#tried commenting out, it didn't work
+gem 'selenium-webdriver', '2.39.0'
+	#tried commenting out, it didn't work
+gem 'phantomjs.rb', '~> 2.0.0'
+	#tried removeing, but it didn't take
 #gem 'newrelic_rpm'
+	#tried commenting out, it didn't work
 
 # Use postgresql as the database for Active Record
 gem 'pg'
