@@ -1,2 +1,0 @@
-
-web: phantomjs server.js
