@@ -15,7 +15,7 @@ gem 'selenium-webdriver', '2.39.0'
 #gem 'headless', '~> 1.0.1'
 gem 'phantomjs.rb', '~> 2.0.0'
 	#tried removeing, but it didn't take
-#gem 'newrelic_rpm'
+gem 'newrelic_rpm'
 	#tried commenting out, it didn't work
 
 # Use postgresql as the database for Active Record
